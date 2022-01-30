@@ -10,7 +10,8 @@ const measurements = measurementsBuffer.toString().split('\n').map(Number);
 
 const solvePart1 = () => {
   const result = _(measurements)
-   .thru(ms => _.zip(_.dropRight(ms, 1), _.drop(ms, 1)))
+   .thru(ms => _.zip(ms, _.drop(ms, 1)))
+   .filter(([a, b]) => a && b)
    .map(([current, next]) => next > current ? INC : DEC)
    .filter(dir => dir === INC)
    .value()
