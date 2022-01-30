@@ -1,5 +1,4 @@
-import solve1 from './solve1.js';
-import solve2 from './solve2.js';
+import { solve1, solve2 } from './solve.js';
 
 const route = `
 forward 5
