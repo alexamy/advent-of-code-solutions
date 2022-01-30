@@ -9,13 +9,11 @@ const measurementsBuffer = await fs.promises.readFile('input.txt');
 const measurements = measurementsBuffer.toString().split('\n').map(Number);
 
 const solvePart1 = () => {
-  const fromFirst = _.dropRight(measurements, 1);
-  const fromSecond = _.drop(measurements, 1);
-
-  const result = _
-   .zip(fromFirst, fromSecond)
+  const result = _(measurements)
+   .thru(ms => _.zip(_.dropRight(ms, 1), _.drop(ms, 1)))
    .map(([current, next]) => next > current ? INC : DEC)
-   .filter(direction => direction === INC)
+   .filter(dir => dir === INC)
+   .value()
    .length;
 
   return result;
