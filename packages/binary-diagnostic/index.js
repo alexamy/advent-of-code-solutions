@@ -4,15 +4,10 @@ import _ from 'lodash';
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
 const findDigits = (numbers, comparator) => {
-  const groups = numbers.reduce((groups, number) => {
-    number.split('').forEach((digit, i) => {
-      if(!groups[i]) groups[i] = [];
+  const getAllAtIndex = i => numbers.map(n => n[i]);
 
-      groups[i].push(digit);
-    });
-
-    return groups;
-  }, []);
+  const count = numbers[0].length;
+  const groups = _.range(count).map(getAllAtIndex);
 
   const digitCounter = group => _(group)
     .countBy()
@@ -23,13 +18,13 @@ const findDigits = (numbers, comparator) => {
   return groups.map(digitCounter);
 };
 
-const inverseBit = c => c === '0' ? '1' : '0';
-
 const solve1 = (string) => {
   const numbers = string.trim().split('\n');
 
   const comparator = c => c['1'] >= c['0'] ? '1' : '0';
   const maxByDigits = findDigits(numbers, comparator);
+
+  const inverseBit = c => c === '0' ? '1' : '0';
   const minByDigits = maxByDigits.map(inverseBit);
 
   const gammaRate = parseInt(maxByDigits.join(''), 2);
