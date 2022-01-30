@@ -1,6 +1,6 @@
-import solve from './index.js';
+import solve from './solve1.js';
 
-it('calculates test route', () => {
+it('calculates test route for part 1', () => {
   const route = `
 forward 5
 down 5

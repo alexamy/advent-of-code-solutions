@@ -1,7 +1,7 @@
 import fs from 'fs';
-import solve from './index.js';
+import solve from './solve1.js';
 
 const paths = await fs.promises.readFile('./input.txt');
-const result = solve(paths.toString());
+const result1 = solve(paths.toString());
 
-console.log(result);
+console.log(`Part 1: ${result1}`);
