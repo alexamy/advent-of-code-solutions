@@ -19,7 +19,12 @@ const findDigits = (numbers, comparator) => {
   }, []);
 
   const maxByDigits = groups
-    .map(group => _.countBy(group, _.identity))
+    .map(group => {
+      const result = _.countBy(group, _.identity);
+      if(result['0'] === undefined) result['0'] = 0;
+      if(result['1'] === undefined) result['1'] = 0;
+      return result;
+    })
     .map(comparator);
 
   return maxByDigits;
