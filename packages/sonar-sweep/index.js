@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 const INC = 'inc';
 const DEC = 'dec';
@@ -8,17 +9,14 @@ const measurementsBuffer = await fs.promises.readFile('input.txt');
 const measurements = measurementsBuffer.toString().split('\n').map(Number);
 
 const solvePart1 = () => {
-  // count directions
-  const trends = [];
-  for(let i = 0; i < measurements.length - 1; i++) {
-    const current = measurements[i];
-    const next = measurements[i+1];
+  const fromFirst = _.dropRight(measurements, 1);
+  const fromSecond = _.drop(measurements, 1);
 
-    trends.push(next > current ? INC : DEC);
-  }
-
-  // find result count
-  const result = trends.filter(direction => direction === INC).length;
+  const result = _
+   .zip(fromFirst, fromSecond)
+   .map(([current, next]) => next > current ? INC : DEC)
+   .filter(direction => direction === INC)
+   .length;
 
   return result;
 }

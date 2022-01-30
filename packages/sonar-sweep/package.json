@@ -9,6 +9,7 @@
     "test": "yarn node --experimental-vm-modules $(yarn bin jest) --watch"
   },
   "dependencies": {
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "lodash": "^4.17.21"
   }
 }
