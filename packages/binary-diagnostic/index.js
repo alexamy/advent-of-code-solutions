@@ -7,7 +7,7 @@ const readInput = async () => {
   return input;
 };
 
-const findMostCommonDigits = (numbers, comparator) => {
+const findDigits = (numbers, comparator) => {
   const groups = numbers.reduce((groups, number) => {
     number.split('').forEach((digit, i) => {
       if(!groups[i]) groups[i] = [];
@@ -31,7 +31,7 @@ const solve1 = (string) => {
   const numbers = string.trim().split('\n');
 
   const comparator = c => c['1'] >= c['0'] ? '1' : '0';
-  const maxByDigits = findMostCommonDigits(numbers, comparator);
+  const maxByDigits = findDigits(numbers, comparator);
   const minByDigits = maxByDigits.map(inverseBit);
 
   const gammaRate = parseInt(maxByDigits.join(''), 2);
@@ -46,27 +46,28 @@ const solve2 = (string) => {
 
   let i = 0;
   let generator = [...numbers];
+
   while(generator.length > 1) {
     const comparator = c => c['1'] >= c['0'] ? '1' : '0';
-    const maxDigit = findMostCommonDigits(generator, comparator)[i];
+    const maxDigit = findDigits(generator, comparator)[i];
+
     generator = generator.filter(digits => digits[i] === maxDigit);
     i++;
   }
 
-  i = 0;
+  let j = 0;
   let scrubber = [...numbers];
   while(scrubber.length > 1) {
     const comparator = c => c['0'] <= c['1'] ? '0' : '1';
-    const minDigit = findMostCommonDigits(scrubber, comparator)[i];
-    scrubber = scrubber.filter(digits => digits[i] === minDigit);
-    i++;
+    const minDigit = findDigits(scrubber, comparator)[j];
+
+    scrubber = scrubber.filter(digits => digits[j] === minDigit);
+    j++;
   }
 
-  generator = parseInt(generator.join(''), 2);
-  scrubber = parseInt(scrubber.join(''), 2);
-  console.log(generator, scrubber);
-
-  const result = generator * scrubber;
+  const generatorRate = parseInt(generator.join(''), 2);
+  const scrubberRate = parseInt(scrubber.join(''), 2);
+  const result = generatorRate * scrubberRate;
 
   return result;
 };
