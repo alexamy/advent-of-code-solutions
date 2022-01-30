@@ -45,5 +45,4 @@ const solvePart2 = () => {
   return result;
 }
 
-console.log(`Part 1: ${solvePart1()}`);
-console.log(`Part 2: ${solvePart2()}`);
+export { solvePart1, solvePart2 };
