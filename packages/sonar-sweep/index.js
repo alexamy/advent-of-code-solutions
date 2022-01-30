@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 const INC = 'inc';
 const DEC = 'dec';
@@ -7,33 +8,26 @@ const DEC = 'dec';
 const measurementsBuffer = await fs.promises.readFile('input.txt');
 const measurements = measurementsBuffer.toString().split('\n').map(Number);
 
-// count directions (part 1)
-const trendsByOne = [];
-for(let i = 0; i < measurements.length - 1; i++) {
-  const current = measurements[i];
-  const next = measurements[i+1];
+const comparator = ([current, next]) => next > current ? INC : DEC;
+const isInc = dir => dir === INC;
 
-  trendsByOne.push(next > current ? INC : DEC);
-}
+const solvePart1 = () => _(measurements)
+  .thru(ms => _.zip(ms, _.drop(ms, 1)))
+  .filter(_.every)
+  .map(comparator)
+  .filter(isInc)
+  .value()
+  .length;
 
-// count directions (part 2)
-const sumsByThree = [];
-for(let i = 0; i < measurements.length - 3; i++) {
-  const [w1, w2, w3] = measurements.slice(i, i + 3);
-  sumsByThree.push(w1 + w2 + w3);
-}
+const solvePart2 = () => _(measurements)
+  .thru(ms => _.zip(ms, _.drop(ms, 1), _.drop(ms, 2)))
+  .filter(_.every)
+  .map(_.sum)
+  .thru(ms => _.zip(ms, _.drop(ms, 1)))
+  .filter(_.every)
+  .map(comparator)
+  .filter(isInc)
+  .value()
+  .length;
 
-const trendsByThree = [];
-for(let i = 0; i < sumsByThree.length - 1; i++) {
-  const current = sumsByThree[i];
-  const next = sumsByThree[i+1];
-
-  trendsByThree.push(next > current ? INC : DEC);
-}
-
-// find result count
-const resultPart1 = trendsByOne.filter(direction => direction === INC).length;
-console.log(`Part 1: ${resultPart1}`);
-
-const resultPart2 = trendsByThree.filter(direction => direction === INC).length;
-console.log(`Part 2: ${resultPart2}`);
+export { solvePart1, solvePart2 };
