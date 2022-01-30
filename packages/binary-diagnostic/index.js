@@ -3,6 +3,8 @@ import _ from 'lodash';
 
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
+const binaryToNumber = n => parseInt(n.join(''), 2);
+
 const findDigits = (numbers, comparator) => {
   const getAllAtIndex = i => numbers.map(n => n[i]);
 
@@ -27,8 +29,8 @@ const solve1 = (string) => {
   const inverseBit = c => c === '0' ? '1' : '0';
   const minByDigits = maxByDigits.map(inverseBit);
 
-  const gammaRate = parseInt(maxByDigits.join(''), 2);
-  const epsilonRate = parseInt(minByDigits.join(''), 2);
+  const gammaRate = binaryToNumber(maxByDigits);
+  const epsilonRate = binaryToNumber(minByDigits);
   const result = gammaRate * epsilonRate;
 
   return result;
@@ -37,28 +39,27 @@ const solve1 = (string) => {
 const solve2 = (string) => {
   const numbers = string.trim().split('\n');
 
-  let i = 0;
-  let generator = [...numbers];
-  while(generator.length > 1) {
-    const comparator = c => c['1'] >= c['0'] ? '1' : '0';
-    const maxDigit = findDigits(generator, comparator)[i];
+  const filterRecursiveBy = (comparator) => {
+    let i = 0;
+    let result = [...numbers];
 
-    generator = generator.filter(digits => digits[i] === maxDigit);
-    i++;
+    while(result.length > 1) {
+      const maxDigit = findDigits(result, comparator)[i];
+      result = result.filter(digits => digits[i] === maxDigit);
+      i++;
+    }
+
+    return result;
   }
 
-  let j = 0;
-  let scrubber = [...numbers];
-  while(scrubber.length > 1) {
-    const comparator = c => c['0'] <= c['1'] ? '0' : '1';
-    const minDigit = findDigits(scrubber, comparator)[j];
+  const generatorComp = c => c['1'] >= c['0'] ? '1' : '0';
+  const generator = filterRecursiveBy(generatorComp);
 
-    scrubber = scrubber.filter(digits => digits[j] === minDigit);
-    j++;
-  }
+  const scrubberComp = c => c['0'] <= c['1'] ? '0' : '1';
+  const scrubber = filterRecursiveBy(scrubberComp);
 
-  const generatorRate = parseInt(generator.join(''), 2);
-  const scrubberRate = parseInt(scrubber.join(''), 2);
+  const generatorRate = binaryToNumber(generator);
+  const scrubberRate = binaryToNumber(scrubber);
   const result = generatorRate * scrubberRate;
 
   return result;
