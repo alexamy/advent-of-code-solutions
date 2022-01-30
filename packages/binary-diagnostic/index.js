@@ -39,7 +39,6 @@ const solve2 = (string) => {
 
   let i = 0;
   let generator = [...numbers];
-
   while(generator.length > 1) {
     const comparator = c => c['1'] >= c['0'] ? '1' : '0';
     const maxDigit = findDigits(generator, comparator)[i];
