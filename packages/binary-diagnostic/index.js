@@ -3,17 +3,18 @@ import _ from "lodash";
 const solve1 = (string) => {
   const numbers = string.trim().split('\n');
 
-  const groups = [];
-  numbers.forEach(number => {
-    const digits = number.split('');
-    digits.forEach((d, i) => {
+  const groups = numbers.reduce((groups, number) => {
+    number.split('').forEach((digit, i) => {
       if(!groups[i]) groups[i] = [];
-      groups[i].push(d);
+
+      groups[i].push(digit);
     });
-  });
+
+    return groups;
+  }, []);
 
   const maxByDigits = groups
-    .map(group => _.countBy(group))
+    .map(group => _.countBy(group, _.identity))
     .map(c => c['0'] > c['1'] ? '0' : '1');
 
   const minByDigits = maxByDigits
