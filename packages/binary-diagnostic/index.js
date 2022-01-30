@@ -1,11 +1,7 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-const readInput = async () => {
-  const input = await fs.promises.readFile('./input.txt');
-
-  return input;
-};
+const readInput = async () => await fs.promises.readFile('./input.txt');
 
 const findDigits = (numbers, comparator) => {
   const groups = numbers.reduce((groups, number) => {
@@ -18,16 +14,13 @@ const findDigits = (numbers, comparator) => {
     return groups;
   }, []);
 
-  const maxByDigits = groups
-    .map(group => {
-      const result = _.countBy(group, _.identity);
-      if(result['0'] === undefined) result['0'] = 0;
-      if(result['1'] === undefined) result['1'] = 0;
-      return result;
-    })
-    .map(comparator);
+  const digitCounter = group => _(group)
+    .countBy()
+    .defaults({ '0': 0, '1': 0 })
+    .thru(comparator)
+    .value();
 
-  return maxByDigits;
+  return groups.map(digitCounter);
 };
 
 const inverseBit = c => c === '0' ? '1' : '0';
