@@ -13,13 +13,15 @@ const complexNavigator = (acc, [dir, n]) => {
 }
 
 const solver = (startPosition, navigator) => (paths) => {
-  const lines = paths.trim().split('\n');
-  const instructions = lines
-    .map(line => line.split(' '))
-    .map(([dir, n]) => ([dir, Number(n)]));
+  const instructions = paths
+    .trim()
+    .split('\n')
+    .map(line => {
+      const [dir, n] = line.split(' ');
+      return [dir, Number(n)];
+    });
 
   const coordinates = instructions.reduce(navigator, startPosition);
-
   const result = coordinates.h * coordinates.d;
 
   return result;
