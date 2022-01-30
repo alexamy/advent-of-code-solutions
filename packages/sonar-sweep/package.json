@@ -6,11 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node run.js",
-    "test": "jest --watch"
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest) --watch"
   },
   "dependencies": {
     "jest": "^27.4.7"
-  },
-  "jest": {
   }
 }
