@@ -53,16 +53,13 @@ const solve2 = (string) => {
   }
 
   const generatorComp = c => c['1'] >= c['0'] ? '1' : '0';
-  const generatorRate = _(numbers)
-    .thru(filterRecursiveBy(generatorComp))
-    .thru(binaryToNumber);
-
   const scrubberComp = c => c['0'] <= c['1'] ? '0' : '1';
-  const scrubberRate = _(numbers)
-    .thru(filterRecursiveBy(scrubberComp))
-    .thru(binaryToNumber);
 
-  const result = generatorRate * scrubberRate;
+  const result = _(numbers)
+    .thru(ns => [filterRecursiveBy(generatorComp)(ns),
+                 filterRecursiveBy(scrubberComp)(ns)])
+    .map(binaryToNumber)
+    .reduce(_.multiply)
 
   return result;
 };
