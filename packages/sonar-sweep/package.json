@@ -1,5 +1,6 @@
 {
   "name": "sonar-sweep",
+  "description": "2021-1-1",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
