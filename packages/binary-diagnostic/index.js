@@ -39,7 +39,7 @@ const solve1 = (string) => {
 const solve2 = (string) => {
   const numbers = string.trim().split('\n');
 
-  const filterRecursiveBy = (comparator) => {
+  const filterRecursiveBy = (comparator) => (numbers) => {
     let i = 0;
     let result = [...numbers];
 
@@ -53,13 +53,15 @@ const solve2 = (string) => {
   }
 
   const generatorComp = c => c['1'] >= c['0'] ? '1' : '0';
-  const generator = filterRecursiveBy(generatorComp);
+  const generatorRate = _(numbers)
+    .thru(filterRecursiveBy(generatorComp))
+    .thru(binaryToNumber);
 
   const scrubberComp = c => c['0'] <= c['1'] ? '0' : '1';
-  const scrubber = filterRecursiveBy(scrubberComp);
+  const scrubberRate = _(numbers)
+    .thru(filterRecursiveBy(scrubberComp))
+    .thru(binaryToNumber);
 
-  const generatorRate = binaryToNumber(generator);
-  const scrubberRate = binaryToNumber(scrubber);
   const result = generatorRate * scrubberRate;
 
   return result;
