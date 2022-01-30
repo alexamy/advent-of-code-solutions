@@ -1,4 +1,11 @@
-import _ from "lodash";
+import fs from 'fs';
+import _ from 'lodash';
+
+const readInput = async () => {
+  const input = await fs.promises.readFile('./input.txt');
+
+  return input;
+};
 
 const solve1 = (string) => {
   const numbers = string.trim().split('\n');
@@ -30,4 +37,4 @@ const solve1 = (string) => {
 
 const solve2 = () => {};
 
-export { solve1, solve2 };
+export { solve1, solve2, readInput };
