@@ -1,7 +1,21 @@
 import { solve1, solve2 } from './index.js';
 
-it.todo('calculates result for part 1', () => {
-  expect(solve1()).toBe();
+const data = `
+00100
+11110
+10110
+10111
+10101
+01111
+00111
+11100
+10000
+11001
+00010
+01010`;
+
+it('calculates result for part 1', () => {
+  expect(solve1(data)).toBe(198);
 });
 
 it.skip('calculates result for part 2', () => {
