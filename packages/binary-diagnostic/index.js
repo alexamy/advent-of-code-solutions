@@ -3,10 +3,13 @@ import _ from "lodash";
 const solve1 = (string) => {
   const numbers = string.trim().split('\n');
 
-  const groups = [[], [], [], [], []];
+  const groups = [];
   numbers.forEach(number => {
     const digits = number.split('');
-    digits.forEach((d, i) => groups[i].push(d));
+    digits.forEach((d, i) => {
+      if(!groups[i]) groups[i] = [];
+      groups[i].push(d);
+    });
   });
 
   const maxByDigits = groups
