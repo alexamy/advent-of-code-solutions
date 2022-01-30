@@ -1,0 +1,13 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "https://adventofcode.com/ solutions",
+  "main": "index.js",
+  "repository": "git@github.com:alexamy/advent-of-code-solutions.git",
+  "author": "alexamy",
+  "license": "UNLICENSED",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
