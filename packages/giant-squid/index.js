@@ -15,6 +15,18 @@ const ROW_INDEXES = [
   [ 4, 9,14,19,24],
 ];
 
+// board helpers
+const markNumber = (board, number) => {
+  const index = board.findIndex(n => n === number);
+  board[index].mark = true;
+};
+
+const isWin = (board) => {
+  return ROW_INDEXES.some(idxs => {
+    return idxs.every(idx => board[idx].mark);
+  });
+}
+
 const solve1 = (data) => {
   // split data
   const lines = data.trim().split('\n');
@@ -39,6 +51,8 @@ const solve1 = (data) => {
   });
 
   // find winner
+  let isWin = false;
+  // while(!isWin) {}
 
   return boards;
 };
