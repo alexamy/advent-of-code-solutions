@@ -18,10 +18,10 @@ const ROW_INDEXES = [
 // board helpers
 const markNumber = (board, number) => {
   const index = board.findIndex(n => n === number);
-  board[index].mark = true;
+  if(index > -1) board[index].mark = true;
 };
 
-const isWin = (board) => {
+const isWinBoard = (board) => {
   return ROW_INDEXES.some(idxs => {
     return idxs.every(idx => board[idx].mark);
   });
@@ -51,8 +51,14 @@ const solve1 = (data) => {
   });
 
   // find winner
-  let isWin = false;
-  // while(!isWin) {}
+  const numbers = [...drawn];
+  let winIdx = -1;
+  while(winIdx === -1 && numbers.length > 0) {
+    const number = numbers.splice(0, 1);
+    boards.map(board => markNumber(board, number));
+
+    winIdx = boards.findIndex(isWinBoard);
+  }
 
   return boards;
 };
