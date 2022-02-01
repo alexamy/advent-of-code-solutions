@@ -65,6 +65,7 @@ const solve1 = (data) => {
     winIdx = boards.findIndex(isWinBoard);
   }
 
+  // calculate sum
   const winBoard = boards[winIdx];
   const winSum = winBoard
     .filter(field => !field.mark)
