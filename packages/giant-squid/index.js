@@ -17,7 +17,7 @@ const ROW_INDEXES = [
 
 // board helpers
 const markNumber = (board, number) => {
-  const index = board.findIndex(n => n === number);
+  const index = board.findIndex(({ n }) => n === number);
   if(index > -1) board[index].mark = true;
 };
 
@@ -31,7 +31,7 @@ const solve1 = (data) => {
   // split data
   const lines = data.trim().split('\n');
 
-  const drawn = lines[0];
+  const drawn = lines[0].split(',').map(Number);
   let merged = lines.slice(2);
 
   const boardsRaw = [];
@@ -52,15 +52,24 @@ const solve1 = (data) => {
 
   // find winner
   const numbers = [...drawn];
+  let drawnNumber;
   let winIdx = -1;
   while(winIdx === -1 && numbers.length > 0) {
-    const number = numbers.splice(0, 1);
-    boards.map(board => markNumber(board, number));
+    [drawnNumber] = numbers.splice(0, 1);
+    boards.forEach(board => markNumber(board, drawnNumber));
 
     winIdx = boards.findIndex(isWinBoard);
   }
 
-  return boards;
+  const winBoard = boards[winIdx];
+  const winSum = winBoard
+    .filter(field => !field.mark)
+    .map(field => field.n)
+    .reduce((a, b) => a + b);
+
+  const result = winSum * drawnNumber;
+
+  return result;
 };
 
 const solve2 = () => {};
