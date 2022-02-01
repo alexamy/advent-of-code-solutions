@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 const SIZE = 5;
 
 const ROW_INDEXES = [
@@ -14,6 +16,8 @@ const ROW_INDEXES = [
   [ 3, 8,13,18,23],
   [ 4, 9,14,19,24],
 ];
+
+const readInput = async () => await fs.promises.readFile('./input.txt');
 
 // board helpers
 const markNumber = (board, number) => {
@@ -74,4 +78,4 @@ const solve1 = (data) => {
 
 const solve2 = () => {};
 
-export { solve1, solve2 };
+export { solve1, solve2, readInput };
