@@ -35,6 +35,14 @@ const parseInputData = (data, size = 5) => {
 }
 
 // board helpers
+const makeMarkedBoard = (board) => {
+  return board.flatMap(row => row
+    .trim()
+    .replace(/\s+/g, ' ')
+    .split(' ')
+    .map(n => ({ mark: false, n: Number(n) })));
+}
+
 const markNumber = (board, number) => {
   const index = board.findIndex(({ n }) => n === number);
   if(index > -1) board[index].mark = true;
@@ -56,18 +64,8 @@ const getScore = (board) => {
 // solvers
 const solve1 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
+  const boards = boardsRaw.map(makeMarkedBoard);
 
-  // make boards
-  const boards = boardsRaw.map(board => {
-    return board.flatMap(row => row
-      .trim()
-      .replace(/\s+/g, ' ')
-      .split(' ')
-      .map(n => ({ mark: false, n: Number(n) }))
-    );
-  });
-
-  // find winner
   const numbers = [...drawn];
   let drawnNumber;
   let winIdx = -1;
@@ -86,18 +84,8 @@ const solve1 = (data) => {
 
 const solve2 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
+  const boards = boardsRaw.map(makeMarkedBoard);
 
-  // make boards
-  const boards = boardsRaw.map(board => {
-    return board.flatMap(row => row
-      .trim()
-      .replace(/\s+/g, ' ')
-      .split(' ')
-      .map(n => ({ mark: false, n: Number(n) }))
-    );
-  });
-
-  // find winner
   const boardsArr = boards.map(board => ({ isWin: false, board }));
   const numbers = [...drawn];
   const winIdxs = [];
