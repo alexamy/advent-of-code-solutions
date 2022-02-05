@@ -108,12 +108,14 @@ const solve2 = (data) => {
 
   while(boardsArr.some(s => !s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
-    boardsArr.forEach(({ board }) => markNumber(board, drawnNumber));
+    boardsArr
+      .filter(s => !s.isWin)
+      .forEach(({ board }) => markNumber(board, drawnNumber));
 
     const winIdx = boardsArr.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
     if(winIdx > -1) {
-      winIdxs.push(winIdx);
       boardsArr[winIdx].isWin = true;
+      winIdxs.push(winIdx);
     }
   }
 
