@@ -83,13 +83,11 @@ const solve2 = (data) => {
   const boards = boardsRaw.map(makeMarkedBoard);
 
   const { number, board } = _.transform(numbers, (acc, number) => {
-    acc.boards.forEach(board => {
-      markNumber(board, number);
-      if(isWinBoard(board)) acc.board = board;
-    });
+    acc.boards.forEach(board => markNumber(board, number));
 
-    acc.boards = acc.boards.filter(b => !isWinBoard(b));
     acc.number = number;
+    acc.board = _.findLast(acc.boards, isWinBoard);
+    acc.boards = _.reject(acc.boards, isWinBoard);
 
     return acc.boards.length > 0;
   }, { boards });
