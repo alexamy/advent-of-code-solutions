@@ -35,3 +35,9 @@ it('calculates result for part 1 file input', async () => {
 it('calculates result for part 2', () => {
   expect(solve2(data)).toBe(1924);
 });
+
+it('calculates result for part 2 file input', async () => {
+  const input = (await readInput()).toString();
+
+  expect(solve2(input)).toBeGreaterThan(0);
+});

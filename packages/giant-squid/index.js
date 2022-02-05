@@ -58,7 +58,7 @@ const getScore = (board) => {
   return board
     .filter(field => !field.mark)
     .map(field => field.n)
-    .reduce((a, b) => a + b);
+    .reduce((a, b) => a + b, 0);
 }
 
 // solvers
@@ -91,7 +91,7 @@ const solve2 = (data) => {
   const winIdxs = [];
   let drawnNumber;
 
-  while(boards.some(s => !s.isWin) && numbers.length > 0) {
+  while(!boards.every(s => s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
     boards.forEach(({ board }) => markNumber(board, drawnNumber));
 
@@ -103,7 +103,7 @@ const solve2 = (data) => {
   }
 
   const [lastWinIdx] = winIdxs.slice(-1);
-  const winSum = getScore(boardsMarked[lastWinIdx]);
+  const winSum = getScore(boards[lastWinIdx].board);
   const result = winSum * drawnNumber;
 
   return result;
