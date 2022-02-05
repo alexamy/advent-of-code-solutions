@@ -86,11 +86,8 @@ const solve2 = (data) => {
     if(result) return result;
 
     let boardWin;
-    boards.forEach(board => {
-      if(isWinBoard(board)) return;
-
+    boards.filter(b => !isWinBoard(b)).forEach(board => {
       markNumber(board, number);
-
       if(isWinBoard(board)) boardWin = board;
     });
 
