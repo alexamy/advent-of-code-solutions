@@ -79,17 +79,17 @@ const solve1 = (data) => {
 };
 
 const solve2 = (data) => {
-  const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
+  const { numbers, boards: boardsRaw } = parseInputData(data);
   const boardsMarked = boardsRaw.map(makeMarkedBoard);
 
   const boards = boardsMarked.map(board => ({ isWin: false, board }));
-  const numbers = [...drawn];
   const winIdxs = [];
   let drawnNumber;
 
-  while(!boards.every(s => s.isWin) && numbers.length > 0) {
-    [drawnNumber] = numbers.splice(0, 1);
+  for(const number of numbers) {
+    if(boards.every(s => s.isWin)) break;
 
+    drawnNumber = number;
     boards.forEach(({ isWin, board }, idx) => {
       if(isWin) return;
 
@@ -101,7 +101,7 @@ const solve2 = (data) => {
         winIdxs.push(idx);
       }
     });
-  }
+  };
 
   const [lastWinIdx] = winIdxs.slice(-1);
   const winBoard = boards[lastWinIdx].board;
