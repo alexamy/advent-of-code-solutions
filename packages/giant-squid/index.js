@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 // constants
 const ROW_INDEXES = [
@@ -20,14 +21,14 @@ const ROW_INDEXES = [
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
 const parseInputData = (data, size = 5) => {
-  const [numSeq, _, ...boardsRaw] = data.trim().split('\n');
+  const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
   const numbers = numSeq.split(',').map(Number);
 
-  const boards = [];
-  while(boardsRaw.length) {
-    boards.push(boardsRaw.splice(0, size));
-    boardsRaw.splice(0, 1);
-  }
+  const boardCount = boardsRaw.length / (size + 1);
+  const boards = _.range(boardCount).map(i => {
+    const startIdx = i * (size + 1);
+    return boardsRaw.slice(startIdx, startIdx + size);
+  });
 
   return { numbers, boards };
 }
