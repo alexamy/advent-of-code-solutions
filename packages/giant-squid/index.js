@@ -1,7 +1,6 @@
 import fs from 'fs';
 
-const SIZE = 5;
-
+// constants
 const ROW_INDEXES = [
   // horizontal
   [ 0, 1, 2, 3, 4],
@@ -17,14 +16,15 @@ const ROW_INDEXES = [
   [ 4, 9,14,19,24],
 ];
 
+// read data helpers
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
-const parseInputData = (data, size = SIZE) => {
-  const boards = [];
+const parseInputData = (data, size = 5) => {
   const lines = data.trim().split('\n');
 
   const numbers = lines[0].split(',').map(Number);
 
+  const boards = [];
   let boardsRaw = lines.slice(2);
   while(boardsRaw.length) {
     boards.push(boardsRaw.splice(0, size));
