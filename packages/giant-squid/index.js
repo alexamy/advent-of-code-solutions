@@ -82,24 +82,20 @@ const solve2 = (data) => {
   const { numbers, boards: boardsRaw } = parseInputData(data);
   const boards = boardsRaw.map(makeMarkedBoard);
 
-  const { result: [number, winBoard] } = _.transform(numbers, (iter, number) => {
-    let boardWin;
+  const { number, board } = _.transform(numbers, (iter, number) => {
+    iter.number = number;
+
     iter.boards.forEach(board => {
       markNumber(board, number);
-      if(isWinBoard(board)) boardWin = board;
+      if(isWinBoard(board)) iter.board = board;
     });
 
     iter.boards = iter.boards.filter(b => !isWinBoard(b));
 
-    const everyWins = boards.every(isWinBoard);
-    if(everyWins) {
-      iter.result = [number, boardWin];
-    };
+    return iter.boards.length > 0;
+  }, { boards });
 
-    return !everyWins;
-  }, { boards, result: null });
-
-  const result = getScore(winBoard) * number;
+  const result = getScore(board) * number;
 
   return result;
 };
