@@ -46,6 +46,14 @@ const isWinBoard = (board) => {
   });
 }
 
+const getScore = (board) => {
+  return board
+    .filter(field => !field.mark)
+    .map(field => field.n)
+    .reduce((a, b) => a + b);
+}
+
+// solvers
 const solve1 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
 
@@ -70,13 +78,7 @@ const solve1 = (data) => {
     winIdx = boards.findIndex(isWinBoard);
   }
 
-  // calculate sum
-  const winBoard = boards[winIdx];
-  const winSum = winBoard
-    .filter(field => !field.mark)
-    .map(field => field.n)
-    .reduce((a, b) => a + b);
-
+  const winSum = getScore(boards[winIdx]);
   const result = winSum * drawnNumber;
 
   return result;
@@ -112,14 +114,8 @@ const solve2 = (data) => {
     }
   }
 
-  // calculate sum
   const [lastWinIdx] = winIdxs.slice(-1);
-  const winBoard = boards[lastWinIdx];
-  const winSum = winBoard
-    .filter(field => !field.mark)
-    .map(field => field.n)
-    .reduce((a, b) => a + b);
-
+  const winSum = getScore(boards[lastWinIdx]);
   const result = winSum * drawnNumber;
 
   return result;
