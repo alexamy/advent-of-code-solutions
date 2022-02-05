@@ -42,7 +42,7 @@ const parseInputData = (data, size = 5) => {
   return { numbers, boards };
 }
 
-const markNumber = (board, number) => {
+const markNumber = number => board => {
   const index = board.findIndex(({ n }) => n === number);
   if(index > -1) board[index].mark = true;
 };
@@ -68,7 +68,7 @@ const solve1 = (data) => {
   const [number, winIdx] = numbers.reduce((result, number) => {
     if(result) return result;
 
-    boards.forEach(board => markNumber(board, number));
+    boards.forEach(markNumber(number));
     const winIdx = boards.findIndex(isWinBoard);
     if(winIdx > -1) return [number, winIdx];
   }, null);
@@ -83,7 +83,7 @@ const solve2 = (data) => {
   const boards = boardsRaw.map(makeMarkedBoard);
 
   const { number, board } = _.transform(numbers, (acc, number) => {
-    acc.boards.forEach(board => markNumber(board, number));
+    acc.boards.forEach(markNumber(number));
 
     acc.number = number;
     acc.board = _.find(acc.boards, isWinBoard);
