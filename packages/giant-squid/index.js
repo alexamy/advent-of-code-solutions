@@ -84,26 +84,26 @@ const solve1 = (data) => {
 
 const solve2 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
-  const boards = boardsRaw.map(makeMarkedBoard);
+  const boardsMarked = boardsRaw.map(makeMarkedBoard);
 
-  const boardsArr = boards.map(board => ({ isWin: false, board }));
+  const boards = boardsMarked.map(board => ({ isWin: false, board }));
   const numbers = [...drawn];
   const winIdxs = [];
   let drawnNumber;
 
-  while(boardsArr.some(s => !s.isWin) && numbers.length > 0) {
+  while(boards.some(s => !s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
-    boardsArr.forEach(({ board }) => markNumber(board, drawnNumber));
+    boards.forEach(({ board }) => markNumber(board, drawnNumber));
 
-    const winIdx = boardsArr.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
+    const winIdx = boards.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
     if(winIdx > -1) {
-      boardsArr[winIdx].isWin = true;
+      boards[winIdx].isWin = true;
       winIdxs.push(winIdx);
     }
   }
 
   const [lastWinIdx] = winIdxs.slice(-1);
-  const winSum = getScore(boards[lastWinIdx]);
+  const winSum = getScore(boardsMarked[lastWinIdx]);
   const result = winSum * drawnNumber;
 
   return result;
