@@ -17,21 +17,7 @@ const ROW_INDEXES = [
   [ 4, 9,14,19,24],
 ];
 
-// read data helpers
 const readInput = async () => await fs.promises.readFile('./input.txt');
-
-const parseInputData = (data, size = 5) => {
-  const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
-  const numbers = numSeq.split(',').map(Number);
-
-  const boardCount = boardsRaw.length / (size + 1);
-  const boards = _.range(boardCount).map(i => {
-    const startIdx = i * (size + 1);
-    return boardsRaw.slice(startIdx, startIdx + size);
-  });
-
-  return { numbers, boards };
-}
 
 // board helpers
 const parseBoard = (board) => {
@@ -40,6 +26,20 @@ const parseBoard = (board) => {
 
 const makeMarkedBoard = (board) => {
   return board.map(n => ({ mark: false, n: Number(n) }));
+}
+
+const parseInputData = (data, size = 5) => {
+  const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
+  const numbers = numSeq.split(',').map(Number);
+
+  const boardCount = boardsRaw.length / (size + 1);
+  const boards = _.range(boardCount).map(i => {
+    const startIdx = i * (size + 1);
+    const rows = boardsRaw.slice(startIdx, startIdx + size);
+    return parseBoard(rows);
+  });
+
+  return { numbers, boards };
 }
 
 const markNumber = (board, number) => {
@@ -63,7 +63,7 @@ const getScore = (board) => {
 // solvers
 const solve1 = (data) => {
   const { numbers, boards: boardsRaw } = parseInputData(data);
-  const boards = boardsRaw.map(parseBoard).map(makeMarkedBoard);
+  const boards = boardsRaw.map(makeMarkedBoard);
 
   let drawnNumber, winIdx;
   for(const number of numbers) {
@@ -82,7 +82,7 @@ const solve1 = (data) => {
 
 const solve2 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
-  const boardsMarked = boardsRaw.map(parseBoard).map(makeMarkedBoard);
+  const boardsMarked = boardsRaw.map(makeMarkedBoard);
 
   const boards = boardsMarked.map(board => ({ isWin: false, board }));
   const numbers = [...drawn];
