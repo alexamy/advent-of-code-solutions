@@ -34,12 +34,12 @@ const parseInputData = (data, size = 5) => {
 }
 
 // board helpers
+const parseBoard = (board) => {
+  return board.flatMap(row => row.trim().replace(/\s+/g, ' ').split(' '));
+}
+
 const makeMarkedBoard = (board) => {
-  return board.flatMap(row => row
-    .trim()
-    .replace(/\s+/g, ' ')
-    .split(' ')
-    .map(n => ({ mark: false, n: Number(n) })));
+  return board.map(n => ({ mark: false, n: Number(n) }));
 }
 
 const markNumber = (board, number) => {
@@ -63,7 +63,7 @@ const getScore = (board) => {
 // solvers
 const solve1 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
-  const boards = boardsRaw.map(makeMarkedBoard);
+  const boards = boardsRaw.map(parseBoard).map(makeMarkedBoard);
 
   const numbers = [...drawn];
   let drawnNumber;
@@ -83,7 +83,7 @@ const solve1 = (data) => {
 
 const solve2 = (data) => {
   const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
-  const boardsMarked = boardsRaw.map(makeMarkedBoard);
+  const boardsMarked = boardsRaw.map(parseBoard).map(makeMarkedBoard);
 
   const boards = boardsMarked.map(board => ({ isWin: false, board }));
   const numbers = [...drawn];
