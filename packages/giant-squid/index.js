@@ -93,15 +93,18 @@ const solve2 = (data) => {
 
   while(!boards.every(s => s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
-    boards
-      .filter(({ isWin }) => !isWin)
-      .forEach(({ board }) => markNumber(board, drawnNumber));
 
-    const winIdx = boards.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
-    if(winIdx > -1) {
-      boards[winIdx].isWin = true;
-      winIdxs.push(winIdx);
-    }
+    boards.forEach(({ isWin, board }, idx) => {
+      if(isWin) return;
+
+      markNumber(board, drawnNumber);
+      const isWinAfterMark = isWinBoard(board);
+
+      if(isWinAfterMark) {
+        boards[idx].isWin = true;
+        winIdxs.push(idx);
+      }
+    });
   }
 
   const [lastWinIdx] = winIdxs.slice(-1);
