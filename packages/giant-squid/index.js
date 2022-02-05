@@ -20,12 +20,10 @@ const ROW_INDEXES = [
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
 const parseInputData = (data, size = 5) => {
-  const lines = data.trim().split('\n');
-
-  const numbers = lines[0].split(',').map(Number);
+  const [numSeq, _, ...boardsRaw] = data.trim().split('\n');
+  const numbers = numSeq.split(',').map(Number);
 
   const boards = [];
-  let boardsRaw = lines.slice(2);
   while(boardsRaw.length) {
     boards.push(boardsRaw.splice(0, size));
     boardsRaw.splice(0, 1);
