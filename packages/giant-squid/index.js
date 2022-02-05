@@ -77,6 +77,57 @@ const solve1 = (data) => {
   return result;
 };
 
-const solve2 = () => {};
+const solve2 = (data) => {
+  // split data
+  const lines = data.trim().split('\n');
+
+  const drawn = lines[0].split(',').map(Number);
+  let merged = lines.slice(2);
+
+  const boardsRaw = [];
+  while(merged.length) {
+    boardsRaw.push(merged.splice(0, SIZE));
+    merged.splice(0, 1);
+  }
+
+  // make boards
+  const boards = boardsRaw.map(board => {
+    return board.flatMap(row => row
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .map(n => ({ mark: false, n: Number(n) }))
+    );
+  });
+
+  // find winner
+  const boardsArr = boards.map(board => ({ isWin: false, board }));
+  const numbers = [...drawn];
+  const winIdxs = [];
+  let drawnNumber;
+
+  while(boardsArr.some(s => !s.isWin) && numbers.length > 0) {
+    [drawnNumber] = numbers.splice(0, 1);
+    boardsArr.forEach(({ board }) => markNumber(board, drawnNumber));
+
+    const winIdx = boardsArr.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
+    if(winIdx > -1) {
+      winIdxs.push(winIdx);
+      boardsArr[winIdx].isWin = true;
+    }
+  }
+
+  // calculate sum
+  const [lastWinIdx] = winIdxs.slice(-1);
+  const winBoard = boards[lastWinIdx];
+  const winSum = winBoard
+    .filter(field => !field.mark)
+    .map(field => field.n)
+    .reduce((a, b) => a + b);
+
+  const result = winSum * drawnNumber;
+
+  return result;
+};
 
 export { solve1, solve2, readInput };
