@@ -80,25 +80,21 @@ const solve1 = (data) => {
 
 const solve2 = (data) => {
   const { numbers, boards: boardsRaw } = parseInputData(data);
-  const boards = boardsRaw.map(makeMarkedBoard).map(board => ({ isWin: false, board }));
+  const boards = boardsRaw.map(makeMarkedBoard);
 
   const [number, winBoard] = numbers.reduce((result, number) => {
     if(result) return result;
 
-    let winIdx;
-    boards.forEach(({ isWin, board }, idx) => {
-      if(isWin) return;
+    let boardWin;
+    boards.forEach(board => {
+      if(isWinBoard(board)) return;
 
       markNumber(board, number);
 
-      if(isWinBoard(board)) {
-        winIdx = idx;
-        boards[idx].isWin = true;
-      }
+      if(isWinBoard(board)) boardWin = board;
     });
 
-    const isEveryWins = boards.every(s => s.isWin);
-    if(isEveryWins) return [number, boards[winIdx].board];
+    if(boards.every(isWinBoard)) return [number, boardWin];
   }, null);
 
   const result = getScore(winBoard) * number;
