@@ -93,7 +93,9 @@ const solve2 = (data) => {
 
   while(!boards.every(s => s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
-    boards.forEach(({ board }) => markNumber(board, drawnNumber));
+    boards
+      .filter(({ isWin }) => !isWin)
+      .forEach(({ board }) => markNumber(board, drawnNumber));
 
     const winIdx = boards.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
     if(winIdx > -1) {
@@ -103,7 +105,9 @@ const solve2 = (data) => {
   }
 
   const [lastWinIdx] = winIdxs.slice(-1);
-  const winSum = getScore(boards[lastWinIdx].board);
+  const winBoard = boards[lastWinIdx].board;
+
+  const winSum = getScore(winBoard);
   const result = winSum * drawnNumber;
 
   return result;
