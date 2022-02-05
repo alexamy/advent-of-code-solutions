@@ -19,6 +19,21 @@ const ROW_INDEXES = [
 
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
+const parseInputData = (data, size = SIZE) => {
+  const boards = [];
+  const lines = data.trim().split('\n');
+
+  const numbers = lines[0].split(',').map(Number);
+
+  let boardsRaw = lines.slice(2);
+  while(boardsRaw.length) {
+    boards.push(boardsRaw.splice(0, size));
+    boardsRaw.splice(0, 1);
+  }
+
+  return { numbers, boards };
+}
+
 // board helpers
 const markNumber = (board, number) => {
   const index = board.findIndex(({ n }) => n === number);
@@ -32,17 +47,7 @@ const isWinBoard = (board) => {
 }
 
 const solve1 = (data) => {
-  // split data
-  const lines = data.trim().split('\n');
-
-  const drawn = lines[0].split(',').map(Number);
-  let merged = lines.slice(2);
-
-  const boardsRaw = [];
-  while(merged.length) {
-    boardsRaw.push(merged.splice(0, SIZE));
-    merged.splice(0, 1);
-  }
+  const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
 
   // make boards
   const boards = boardsRaw.map(board => {
@@ -78,17 +83,7 @@ const solve1 = (data) => {
 };
 
 const solve2 = (data) => {
-  // split data
-  const lines = data.trim().split('\n');
-
-  const drawn = lines[0].split(',').map(Number);
-  let merged = lines.slice(2);
-
-  const boardsRaw = [];
-  while(merged.length) {
-    boardsRaw.push(merged.splice(0, SIZE));
-    merged.splice(0, 1);
-  }
+  const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
 
   // make boards
   const boards = boardsRaw.map(board => {
@@ -108,9 +103,7 @@ const solve2 = (data) => {
 
   while(boardsArr.some(s => !s.isWin) && numbers.length > 0) {
     [drawnNumber] = numbers.splice(0, 1);
-    boardsArr
-      .filter(s => !s.isWin)
-      .forEach(({ board }) => markNumber(board, drawnNumber));
+    boardsArr.forEach(({ board }) => markNumber(board, drawnNumber));
 
     const winIdx = boardsArr.findIndex(({ isWin, board }) => !isWin && isWinBoard(board));
     if(winIdx > -1) {
