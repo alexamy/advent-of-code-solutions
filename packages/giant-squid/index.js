@@ -86,7 +86,7 @@ const solve2 = (data) => {
     acc.boards.forEach(board => markNumber(board, number));
 
     acc.number = number;
-    acc.board = _.findLast(acc.boards, isWinBoard);
+    acc.board = _.find(acc.boards, isWinBoard);
     acc.boards = _.reject(acc.boards, isWinBoard);
 
     return acc.boards.length > 0;
