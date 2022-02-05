@@ -62,17 +62,16 @@ const getScore = (board) => {
 
 // solvers
 const solve1 = (data) => {
-  const { numbers: drawn, boards: boardsRaw } = parseInputData(data);
+  const { numbers, boards: boardsRaw } = parseInputData(data);
   const boards = boardsRaw.map(parseBoard).map(makeMarkedBoard);
 
-  const numbers = [...drawn];
-  let drawnNumber;
-  let winIdx = -1;
-  while(winIdx === -1 && numbers.length > 0) {
-    [drawnNumber] = numbers.splice(0, 1);
-    boards.forEach(board => markNumber(board, drawnNumber));
-
+  let drawnNumber, winIdx;
+  for(const number of numbers) {
+    boards.forEach(board => markNumber(board, number));
     winIdx = boards.findIndex(isWinBoard);
+    drawnNumber = number;
+
+    if(winIdx > -1) break;
   }
 
   const winSum = getScore(boards[winIdx]);
