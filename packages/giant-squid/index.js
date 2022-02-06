@@ -86,8 +86,7 @@ const solve2 = (data) => {
     acc.boards.forEach(markNumber(number));
 
     acc.number = number;
-    acc.board = _.find(acc.boards, isWinBoard);
-    acc.boards = _.reject(acc.boards, isWinBoard);
+    [[acc.board], acc.boards] = _.partition(acc.boards, isWinBoard);
 
     return acc.boards.length > 0;
   }, { boards });
