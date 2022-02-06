@@ -35,7 +35,7 @@ const parseBoard = (board: string[]): string[] =>
 const makeMarkedBoard = (board: string[]): Board =>
   board.map(n => ({ mark: false, n: Number(n) }));
 
-const parseInputData = (size: number) => (data: string): { numbers: number[], boards: string[][] } => {
+const parseInputData = (size: number) => (data: string): { numbers: number[], boards: Board[] } => {
   const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
   const numbers = numSeq.split(',').map(Number);
 
@@ -43,7 +43,7 @@ const parseInputData = (size: number) => (data: string): { numbers: number[], bo
   const boards = _.range(boardCount).map(i => {
     const startIdx = i * (size + 1);
     const rows = boardsRaw.slice(startIdx, startIdx + size);
-    return parseBoard(rows);
+    return makeMarkedBoard(parseBoard(rows));
   });
 
   return { numbers, boards };
@@ -81,8 +81,7 @@ const solverLast: Solver = (size) => (acc, number) => {
 
 const solve = (solver: Solver) => (data: string) => {
   const size = 5;
-  const { numbers, boards: boardsRaw } = parseInputData(size)(data);
-  const boards = boardsRaw.map(makeMarkedBoard);
+  const { numbers, boards } = parseInputData(size)(data);
 
   return _(numbers)
     .transform(solver(size), { boards, board: [], number: -1 })
