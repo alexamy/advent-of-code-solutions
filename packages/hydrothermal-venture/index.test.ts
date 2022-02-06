@@ -1,4 +1,4 @@
-import { solve1, solve2 } from './index';
+import { readInput, solve1, solve2 } from './index';
 
 const data = `
 0,9 -> 5,9
@@ -15,6 +15,12 @@ const data = `
 
 it('calculates result for part 1', () => {
   expect(solve1(data)).toBe(5);
+});
+
+it('calculates result for part file input', async () => {
+  const input = await readInput();
+
+  expect(solve1(input)).toBe(6311);
 });
 
 it.skip('calculates result for part 2', () => {

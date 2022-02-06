@@ -1,3 +1,4 @@
+import fs from 'fs';
 import _ from 'lodash';
 
 type Solver = (data: string) => number;
@@ -28,7 +29,9 @@ const makePath = (start: Point, end: Point): Point[] => {
   return [[0,0]];
 }
 
-const solve1: Solver = (data) => {
+export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
+
+export const solve1: Solver = (data) => {
   const pairs = data.trim().split('\n')
     .map(row => row.split(' -> '))
     .map(pair => pair.map(coords => coords.split(',').map(Number)))
@@ -45,8 +48,6 @@ const solve1: Solver = (data) => {
   return count;
 };
 
-const solve2: Solver = (data) => {
+export const solve2: Solver = (data) => {
   return 0;
 };
-
-export { solve1, solve2 };
