@@ -11,13 +11,9 @@ const getWinRows = _.memoize(size => {
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
 // board helpers
-const parseBoard = (board) => {
-  return board.flatMap(row => row.trim().replace(/\s+/g, ' ').split(' '));
-}
+const parseBoard = board => board.flatMap(row => row.trim().replace(/\s+/g, ' ').split(' '));
 
-const makeMarkedBoard = (board) => {
-  return board.map(n => ({ mark: false, n: Number(n) }));
-}
+const makeMarkedBoard = board => board.map(n => ({ mark: false, n: Number(n) }));
 
 const parseInputData = (data, size) => {
   const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
@@ -36,18 +32,13 @@ const parseInputData = (data, size) => {
 const markNumber = number => board => board.map(cell =>
   cell.n === number ? ({ ...cell, mark: true }) : cell);
 
-const isWinBoard = (size) => board => {
-  return getWinRows(size).some(idxs => {
-    return idxs.every(idx => board[idx].mark);
-  });
-}
+const isWinBoard = size => board => getWinRows(size)
+  .some(idxs => idxs.every(idx => board[idx].mark));
 
-const getScore = (board) => {
-  return board
-    .filter(field => !field.mark)
-    .map(field => field.n)
-    .reduce((a, b) => a + b, 0);
-}
+const getScore = board => board
+  .filter(field => !field.mark)
+  .map(field => field.n)
+  .reduce((a, b) => a + b, 0);
 
 // solvers
 const solve1 = (data) => {
