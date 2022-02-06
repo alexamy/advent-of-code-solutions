@@ -17,7 +17,7 @@ const parseBoard = board => board.flatMap(row => row.trim().replace(/\s+/g, ' ')
 
 const makeMarkedBoard = board => board.map(n => ({ mark: false, n: Number(n) }));
 
-const parseInputData = (data, size) => {
+const parseInputData = size => data => {
   const [numSeq, _delim, ...boardsRaw] = data.trim().split('\n');
   const numbers = numSeq.split(',').map(Number);
 
@@ -63,7 +63,7 @@ const solver2 = size => (acc, number) => {
 
 const solve = solver => data => {
   const size = 5;
-  const { numbers, boards: boardsRaw } = parseInputData(data, size);
+  const { numbers, boards: boardsRaw } = parseInputData(size)(data);
   const boards = boardsRaw.map(makeMarkedBoard);
 
   return _(numbers)
