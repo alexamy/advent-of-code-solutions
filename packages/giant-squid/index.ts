@@ -79,15 +79,12 @@ const solverLast: Solver = (size) => (acc, number) => {
   return acc.boards.length > 0;
 }
 
-const solve = (solver: Solver) => (data: string) => {
-  const size = 5;
-  const { numbers, boards } = parseInputData(size)(data);
-
-  return _(numbers)
-    .transform(solver(size), { boards, board: [], number: -1 })
-    .thru(({ number, board }) => number * getScore(board))
-    .value();
-};
+const solve = (solver: Solver) => (data: string, size = 5) =>
+  _(data)
+  .thru(parseInputData(size))
+  .thru(({ numbers, boards }) => _.transform(numbers, solver(size), { boards, board: [], number: -1 }))
+  .thru(({ number, board }) => number * getScore(board))
+  .value();
 
 const solve1 = solve(solverFirst);
 const solve2 = solve(solverLast);
