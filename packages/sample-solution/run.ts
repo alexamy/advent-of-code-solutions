@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { solve1, solve2, readInput } from './index';
+import { solve1, solve2 } from './index';
 
 const solve = async () => {
-  const input = (await readInput()).toString();
+  const input = await fs.promises.readFile('./input.txt').toString();
   const result1 = solve1(input);
   const result2 = solve2(input);
 
