@@ -1,6 +1,7 @@
 import fs from 'fs';
 import _ from 'lodash';
 
+// constants
 const getWinRows = _.memoize(size => {
   const getRow = i => _.range(i * size, i * size + size);
   const getColumn = i => _.range(i, i + size * size, size);
@@ -10,8 +11,6 @@ const getWinRows = _.memoize(size => {
 
   return horizontal.concat(vertical);
 });
-
-const readInput = async () => await fs.promises.readFile('./input.txt');
 
 // board helpers
 const parseBoard = board => board.flatMap(row => row.trim().replace(/\s+/g, ' ').split(' '));
@@ -44,6 +43,8 @@ const getScore = board => board
   .reduce((a, b) => a + b, 0);
 
 // solvers
+const readInput = async () => await fs.promises.readFile('./input.txt');
+
 const solve1 = (data) => {
   const size = 5;
   const { numbers, boards: boardsRaw } = parseInputData(data, size);
