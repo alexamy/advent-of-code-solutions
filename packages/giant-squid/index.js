@@ -45,7 +45,7 @@ const getScore = board => board
 // solvers
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
-const solver1 = size => (acc, number) => {
+const solverFirst = size => (acc, number) => {
   acc.number = number;
   acc.boards = acc.boards.map(markNumber(number));
   acc.board = acc.boards.find(isWinBoard(size));
@@ -53,7 +53,7 @@ const solver1 = size => (acc, number) => {
   return !acc.board;
 }
 
-const solver2 = size => (acc, number) => {
+const solverLast = size => (acc, number) => {
   acc.number = number;
   acc.boards = acc.boards.map(markNumber(number));
   [[acc.board], acc.boards] = _.partition(acc.boards, isWinBoard(size));
@@ -72,7 +72,7 @@ const solve = solver => data => {
     .value();
 };
 
-const solve1 = solve(solver1);
-const solve2 = solve(solver2);
+const solve1 = solve(solverFirst);
+const solve2 = solve(solverLast);
 
 export { solve1, solve2, readInput };
