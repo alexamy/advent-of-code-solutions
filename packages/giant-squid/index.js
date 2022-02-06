@@ -75,5 +75,4 @@ const solve = solver => data => {
 const solve1 = solve(solver1);
 const solve2 = solve(solver2);
 
-
 export { solve1, solve2, readInput };
