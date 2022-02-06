@@ -1,21 +1,12 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-// constants
-const ROW_INDEXES = [
-  // horizontal
-  [ 0, 1, 2, 3, 4],
-  [ 5, 6, 7, 8, 9],
-  [10,11,12,13,14],
-  [15,16,17,18,19],
-  [20,21,22,23,24],
-  // vertical
-  [ 0, 5,10,15,20],
-  [ 1, 6,11,16,21],
-  [ 2, 7,12,17,22],
-  [ 3, 8,13,18,23],
-  [ 4, 9,14,19,24],
-];
+const getWinRows = _.memoize(size => {
+  const horizontal = _.range(size).map(i => _.range(i * size, i * size + size));
+  const vertical = _.range(size).map(i => _.range(i, i + size * size, size));
+
+  return horizontal.concat(vertical);
+});
 
 const readInput = async () => await fs.promises.readFile('./input.txt');
 
@@ -45,8 +36,8 @@ const parseInputData = (data, size = 5) => {
 const markNumber = number => board => board.map(cell =>
   cell.n === number ? ({ ...cell, mark: true }) : cell);
 
-const isWinBoard = (board) => {
-  return ROW_INDEXES.some(idxs => {
+const isWinBoard = (size = 5) => board => {
+  return getWinRows(size).some(idxs => {
     return idxs.every(idx => board[idx].mark);
   });
 }
@@ -66,7 +57,7 @@ const solve1 = (data) => {
   const { number, board } = _.transform(numbers, (acc, number) => {
     acc.number = number;
     acc.boards = acc.boards.map(markNumber(number));
-    acc.board = acc.boards.find(isWinBoard);
+    acc.board = acc.boards.find(isWinBoard(5));
 
     return !acc.board;
   }, { boards });
@@ -83,7 +74,7 @@ const solve2 = (data) => {
   const { number, board } = _.transform(numbers, (acc, number) => {
     acc.number = number;
     acc.boards = acc.boards.map(markNumber(number));
-    [[acc.board], acc.boards] = _.partition(acc.boards, isWinBoard);
+    [[acc.board], acc.boards] = _.partition(acc.boards, isWinBoard(5));
 
     return acc.boards.length > 0;
   }, { boards });
