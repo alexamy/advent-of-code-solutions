@@ -19,8 +19,8 @@ type Solver = (size: number) => (acc: SolverContext, number: number) => boolean;
 
 // constants
 const getWinRows = _.memoize((size: number): number[][] => {
-  const getRow = i => _.range(i * size, i * size + size);
-  const getColumn = i => _.range(i, i + size * size, size);
+  const getRow = (i: number) => _.range(i * size, i * size + size);
+  const getColumn = (i: number) => _.range(i, i + size * size, size);
 
   const horizontal = _.range(size).map(getRow);
   const vertical = _.range(size).map(getColumn);
@@ -66,7 +66,7 @@ const readInput = async () => await fs.promises.readFile('./input.txt');
 const solverFirst: Solver = (size) => (acc, number) => {
   acc.number = number;
   acc.boards = acc.boards.map(markNumber(number));
-  acc.board = acc.boards.find(isWinBoard(size));
+  acc.board = acc.boards.find(isWinBoard(size)) || [];
 
   return !acc.board;
 }
