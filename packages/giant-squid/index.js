@@ -65,15 +65,15 @@ const solve1 = (data) => {
   const { numbers, boards: boardsRaw } = parseInputData(data);
   const boards = boardsRaw.map(makeMarkedBoard);
 
-  const [number, winIdx] = numbers.reduce((result, number) => {
+  const [number, board] = numbers.reduce((result, number) => {
     if(result) return result;
 
     boards.forEach(markNumber(number));
     const winIdx = boards.findIndex(isWinBoard);
-    if(winIdx > -1) return [number, winIdx];
+    if(winIdx > -1) return [number, boards[winIdx]];
   }, null);
 
-  const result = getScore(boards[winIdx]) * number;
+  const result = getScore(board) * number;
 
   return result;
 };
