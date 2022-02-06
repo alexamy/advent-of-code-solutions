@@ -66,11 +66,10 @@ const solve = solver => data => {
   const { numbers, boards: boardsRaw } = parseInputData(data, size);
   const boards = boardsRaw.map(makeMarkedBoard);
 
-  const { number, board } = _.transform(numbers, solver(size), { boards });
-
-  const result = getScore(board) * number;
-
-  return result;
+  return _(numbers)
+    .transform(solver(size), { boards })
+    .thru(({ number, board }) => number * getScore(board))
+    .value();
 };
 
 const solve1 = solve(solver1);
