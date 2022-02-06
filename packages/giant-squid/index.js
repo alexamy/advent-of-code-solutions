@@ -42,10 +42,8 @@ const parseInputData = (data, size = 5) => {
   return { numbers, boards };
 }
 
-const markNumber = number => board => {
-  const index = board.findIndex(({ n }) => n === number);
-  if(index > -1) board[index].mark = true;
-};
+const markNumber = number => board => board.map(cell =>
+  cell.n === number ? ({ ...cell, mark: true }) : cell);
 
 const isWinBoard = (board) => {
   return ROW_INDEXES.some(idxs => {
@@ -66,10 +64,9 @@ const solve1 = (data) => {
   const boards = boardsRaw.map(makeMarkedBoard);
 
   const { number, board } = _.transform(numbers, (acc, number) => {
-    acc.boards.forEach(markNumber(number));
-
     acc.number = number;
-    acc.board = boards.find(isWinBoard);
+    acc.boards = acc.boards.map(markNumber(number));
+    acc.board = acc.boards.find(isWinBoard);
 
     return !acc.board;
   }, { boards });
@@ -84,9 +81,8 @@ const solve2 = (data) => {
   const boards = boardsRaw.map(makeMarkedBoard);
 
   const { number, board } = _.transform(numbers, (acc, number) => {
-    acc.boards.forEach(markNumber(number));
-
     acc.number = number;
+    acc.boards = acc.boards.map(markNumber(number));
     [[acc.board], acc.boards] = _.partition(acc.boards, isWinBoard);
 
     return acc.boards.length > 0;
