@@ -24,6 +24,8 @@ const makePath = (start: Point, end: Point): Point[] => {
 
     return _.range(xmin, xmax + 1).map(x => [x,y]);
   }
+
+  return [[0,0]];
 }
 
 const solve1: Solver = (data) => {
@@ -31,7 +33,7 @@ const solve1: Solver = (data) => {
     .map(row => row.split(' -> '))
     .map(pair => pair.map(coords => coords.split(',').map(Number)))
     .filter(([start, end]) => start[0] === end[0] || start[1] === end[1])
-    .flatMap(([start, end]) => makePath(start, end));
+    .flatMap(([start, end]) => makePath(start as Point, end as Point));
 
   const count = _(pairs)
     .countBy()
