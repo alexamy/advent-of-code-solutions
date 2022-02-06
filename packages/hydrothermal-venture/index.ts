@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 type Solver = (data: string) => number;
 
-type Point = [number, number];
+type Point = number[];
 
 const makePath = (start: Point, end: Point): Point[] => {
   const [x1, y1] = start;
@@ -32,16 +32,23 @@ const makePath = (start: Point, end: Point): Point[] => {
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
 export const solve1: Solver = (data) => {
-  const pairs = data.trim().split('\n')
-    .map(row => row.split(' -> '))
-    .map(pair => pair.map(coords => coords.split(',').map(Number)))
-    .filter(([start, end]) => start[0] === end[0] || start[1] === end[1])
-    .flatMap(([start, end]) => makePath(start as Point, end as Point));
+  const isHorizontal = (start: number[], end: number[]) => start[0] === end[0];
+  const isVertical = (start: number[], end: number[]) => start[1] === end[1];
 
-  const count = _(pairs)
+  const pairs = data
+    .trim()
+    .split('\n')
+    .map(row => row.split(' -> '))
+    .map(pair => pair.map(coords => coords.split(',').map(Number)));
+
+  const pathData = pairs
+    .filter(([start, end]) => isHorizontal(start, end) || isVertical(start, end))
+    .flatMap(([start, end]) => makePath(start, end));
+
+  const count = _(pathData)
     .countBy()
-    .toPairs()
-    .filter(([_, count]) => count > 1)
+    .values()
+    .filter(count => count > 1)
     .value()
     .length;
 
