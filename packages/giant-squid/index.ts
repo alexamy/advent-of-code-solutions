@@ -10,9 +10,9 @@ interface Cell {
 type Board = Cell[];
 
 interface SolverContext {
-  number: number;
-  board: Board;
   boards: Board[];
+  board?: Board;
+  number?: number;
 }
 
 type Solver = (size: number) => (acc: SolverContext, number: number) => boolean;
@@ -66,7 +66,7 @@ const readInput = async () => await fs.promises.readFile('./input.txt');
 const solverFirst: Solver = (size) => (acc, number) => {
   acc.number = number;
   acc.boards = acc.boards.map(markNumber(number));
-  acc.board = acc.boards.find(isWinBoard(size)) || [];
+  acc.board = acc.boards.find(isWinBoard(size));
 
   return !acc.board;
 }
