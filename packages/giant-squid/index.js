@@ -2,8 +2,11 @@ import fs from 'fs';
 import _ from 'lodash';
 
 const getWinRows = _.memoize(size => {
-  const horizontal = _.range(size).map(i => _.range(i * size, i * size + size));
-  const vertical = _.range(size).map(i => _.range(i, i + size * size, size));
+  const getRow = i => _.range(i * size, i * size + size);
+  const getColumn = i => _.range(i, i + size * size, size);
+
+  const horizontal = _.range(size).map(getRow);
+  const vertical = _.range(size).map(getColumn);
 
   return horizontal.concat(vertical);
 });
