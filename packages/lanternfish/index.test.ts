@@ -17,10 +17,17 @@ it.skip('calculates result for part 1 file input', async () => {
 });
 
 // it wont work just by bruteforce
-it.only('calculates result for part 2', async () => {
-  // 256
-  expect(solve1(data, 135)).toBe(26984457539);
-}, 500);
+it.only('doesnt run too long', () => {
+  const start = new Date();
+  solve1(data, 130);
+  const runTime = new Date().getTime() - start.getTime();
+
+  expect(runTime).toBeLessThanOrEqual(500);
+});
+
+it.skip('calculates result for part 2', () => {
+  expect(solve1(data, 256)).toBe(26984457539);
+});
 
 it.skip('calculates result for part 2 file input', async () => {
   const input = await readInput();

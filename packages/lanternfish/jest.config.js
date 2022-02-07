@@ -2,7 +2,7 @@
 
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  testEnvironment: 'node',
   globals: {
     'ts-jest': {
       isolatedModules: true,
