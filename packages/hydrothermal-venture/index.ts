@@ -17,17 +17,16 @@ const makePath = ([start, end]: Point[]): Point[] => {
 
   const sx = Math.sign(x2 - x1);
   const sy = Math.sign(y2 - y1);
+  const dx = Math.abs(x2 - x1);
+  const dy = Math.abs(y2 - y1);
 
-  const horRange = _.range(x1, x2 + sx, sx);
-  const vertRange = _.range(y1, y2 + sy, sy);
+  const horizontal = dx === 0
+    ? _.times(dy + 1, _.constant(x1))
+    : _.range(x1, x2 + sx, sx);
 
-  const horizontal = horRange.length > 0
-    ? horRange
-    : _.times(vertRange.length, _.constant(x1));
-
-  const vertical = vertRange.length > 0
-    ? vertRange
-    : _.times(horRange.length, _.constant(y1));
+  const vertical = sy === 0
+    ? _.times(dx + 1, _.constant(y1))
+    : _.range(y1, y2 + sy, sy);
 
   const points = _
     .zip(horizontal, vertical)
