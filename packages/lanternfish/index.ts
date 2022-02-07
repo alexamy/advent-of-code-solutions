@@ -6,10 +6,9 @@ export const readInput = async () => (await fs.promises.readFile('./input.txt'))
 export const solve1 = (data: string, day: number) => _
   .chain(null)
   .range(day)
-  .transform((acc) => {
-    acc.days = acc.days.flatMap(n => n === 0 ? [6,8] : [n-1]);
-  }, { days: data.trim().split(',').map(Number) })
-  .get('days')
+  .reduce((days) =>
+    days.flatMap(n => n === 0 ? [6,8] : [n-1]),
+    data.trim().split(',').map(Number))
   .value()
   .length;
 
