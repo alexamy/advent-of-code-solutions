@@ -16,8 +16,9 @@ it.skip('calculates result for part 1 file input', async () => {
   expect(solve1(input, 80)).toBe(390011);
 });
 
-it.skip('calculates result for part 2', () => {
-  expect(solve2(data)).toBe({});
+it.only('calculates result for part 2', () => {
+  // it wont work just by bruteforce
+  expect(solve2(data, 256)).toBe(26984457539);
 });
 
 it.skip('calculates result for part 2 file input', async () => {
