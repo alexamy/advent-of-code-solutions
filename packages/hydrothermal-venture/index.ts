@@ -53,5 +53,27 @@ export const solve1: Solver = (data) => {
 };
 
 export const solve2: Solver = (data) => {
-  return 0;
+  const isHorizontal = (start: number[], end: number[]) => start[0] === end[0];
+  const isVertical = (start: number[], end: number[]) => start[1] === end[1];
+  const isDiagonal = (start: number[], end: number[]) =>
+    Math.abs(start[0] - end[0]) === Math.abs(start[1] - end[1]);
+
+  const pairs = data
+    .trim()
+    .split('\n')
+    .map(row => row.split(' -> '))
+    .map(pair => pair.map(coords => coords.split(',').map(Number)));
+
+  const pathData = pairs
+    .filter(([start, end]) => isHorizontal(start, end) || isVertical(start, end) || isDiagonal(start, end))
+    .flatMap(([start, end]) => makePath(start, end));
+
+  const count = _(pathData)
+    .countBy()
+    .values()
+    .filter(count => count > 1)
+    .value()
+    .length;
+
+  return count;
 };

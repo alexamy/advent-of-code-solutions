@@ -23,6 +23,6 @@ it('calculates result for part file input', async () => {
   expect(solve1(input)).toBe(6311);
 });
 
-it.skip('calculates result for part 2', () => {
-  expect(solve2('')).toBe({});
+it('calculates result for part 2', () => {
+  expect(solve2(data)).toBe(12);
 });
