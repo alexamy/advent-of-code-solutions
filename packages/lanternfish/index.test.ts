@@ -1,16 +1,19 @@
 import { readInput, solve1, solve2 } from './index';
 
-const data = `
-`;
+const data = `3,4,3,1,2`;
 
-it.todo('calculates result for part 1', () => {
-  expect(solve1(data)).toBe({});
+it('calculates result for part 1 day 18', () => {
+  expect(solve1(data, 18)).toBe(26);
+});
+
+it('calculates result for part 1 day 80', () => {
+  expect(solve1(data, 80)).toBe(5934);
 });
 
 it.skip('calculates result for part 1 file input', async () => {
   const input = await readInput();
 
-  expect(solve2(input)).toBe({});
+  expect(solve1(input, 80)).toBe({});
 });
 
 it.skip('calculates result for part 2', () => {
