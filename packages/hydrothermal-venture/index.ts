@@ -1,11 +1,12 @@
 import fs from 'fs';
 import _ from 'lodash';
 
+type SolverGeneric = (data: string, filter: (p: Point[]) => boolean) => number;
 type Solver = (data: string) => number;
 
 type Point = number[];
 
-const makePath = (start: Point, end: Point): Point[] => {
+const makePath = ([start, end]: Point[]): Point[] => {
   const [x1, y1] = start;
   const [x2, y2] = end;
 
@@ -28,19 +29,25 @@ const makePath = (start: Point, end: Point): Point[] => {
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
-export const solve1: Solver = (data) => {
-  const isHorizontal = (start: number[], end: number[]) => start[0] === end[0];
-  const isVertical = (start: number[], end: number[]) => start[1] === end[1];
+const isHorizontal = ([start, end]: Point[]) =>
+  start[0] === end[0];
 
-  const pairs = data
+const isVertical = ([start, end]: Point[]) =>
+  start[1] === end[1];
+
+const isDiagonal = ([start, end]: Point[]) =>
+  Math.abs(start[0] - end[0]) === Math.abs(start[1] - end[1]);
+
+export const solve: SolverGeneric = (data, filter) => {
+  const pairs: Point[][] = data
     .trim()
     .split('\n')
     .map(row => row.split(' -> '))
     .map(pair => pair.map(coords => coords.split(',').map(Number)));
 
   const pathData = pairs
-    .filter(([start, end]) => isHorizontal(start, end) || isVertical(start, end))
-    .flatMap(([start, end]) => makePath(start, end));
+    .filter(filter)
+    .flatMap(makePath);
 
   const count = _(pathData)
     .countBy()
@@ -52,28 +59,8 @@ export const solve1: Solver = (data) => {
   return count;
 };
 
-export const solve2: Solver = (data) => {
-  const isHorizontal = (start: number[], end: number[]) => start[0] === end[0];
-  const isVertical = (start: number[], end: number[]) => start[1] === end[1];
-  const isDiagonal = (start: number[], end: number[]) =>
-    Math.abs(start[0] - end[0]) === Math.abs(start[1] - end[1]);
+export const solve1: Solver = (data) =>
+  solve(data, _.overSome(isHorizontal, isVertical));
 
-  const pairs = data
-    .trim()
-    .split('\n')
-    .map(row => row.split(' -> '))
-    .map(pair => pair.map(coords => coords.split(',').map(Number)));
-
-  const pathData = pairs
-    .filter(([start, end]) => isHorizontal(start, end) || isVertical(start, end) || isDiagonal(start, end))
-    .flatMap(([start, end]) => makePath(start, end));
-
-  const count = _(pathData)
-    .countBy()
-    .values()
-    .filter(count => count > 1)
-    .value()
-    .length;
-
-  return count;
-};
+export const solve2: Solver = (data) =>
+  solve(data, _.overSome(isHorizontal, isVertical, isDiagonal));
