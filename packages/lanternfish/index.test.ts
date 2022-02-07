@@ -19,7 +19,7 @@ it.skip('calculates result for part 1 file input', async () => {
 // it wont work just by bruteforce
 it.only('doesnt run too long', () => {
   const start = new Date();
-  solve1(data, 130);
+  solve2(data, 130);
   const runTime = new Date().getTime() - start.getTime();
 
   expect(runTime).toBeLessThanOrEqual(500);
