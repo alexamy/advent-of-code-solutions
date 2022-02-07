@@ -1,5 +1,7 @@
-const solve1 = (data: string) => {};
+import fs from 'fs';
 
-const solve2 = (data: string) => {};
+export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
-export { solve1, solve2 };
+export const solve1 = (data: string) => {};
+
+export const solve2 = (data: string) => {};
