@@ -17,7 +17,7 @@ it('calculates result for part 1', () => {
   expect(solve1(data)).toBe(5);
 });
 
-it('calculates result for part file input', async () => {
+it('calculates result for part 1 file input', async () => {
   const input = await readInput();
 
   expect(solve1(input)).toBe(6311);
@@ -25,4 +25,10 @@ it('calculates result for part file input', async () => {
 
 it('calculates result for part 2', () => {
   expect(solve2(data)).toBe(12);
+});
+
+it('calculates result for part 2 file input', async () => {
+  const input = await readInput();
+
+  expect(solve2(input)).toBe(19929);
 });
