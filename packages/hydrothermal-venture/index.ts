@@ -15,23 +15,22 @@ const makePath = ([start, end]: Point[]): Point[] => {
   const { x: x1, y: y1 } = start;
   const { x: x2, y: y2 } = end;
 
-  const sx = Math.sign(x2 - x1);
-  const sy = Math.sign(y2 - y1);
   const dx = Math.abs(x2 - x1);
+  const sx = Math.sign(x2 - x1);
+
   const dy = Math.abs(y2 - y1);
+  const sy = Math.sign(y2 - y1);
 
   const horizontal = dx === 0
     ? _.times(dy + 1, _.constant(x1))
     : _.range(x1, x2 + sx, sx);
 
-  const vertical = sy === 0
+  const vertical = dy === 0
     ? _.times(dx + 1, _.constant(y1))
     : _.range(y1, y2 + sy, sy);
 
-  const points = _
-    .zip(horizontal, vertical)
-    // @ts-ignore
-    .map(makePoint)
+  // @ts-ignore
+  const points = _.zip(horizontal, vertical).map(makePoint)
 
   return points as Point[];
 }
