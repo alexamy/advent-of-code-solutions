@@ -9,24 +9,21 @@ const makePath = (start: Point, end: Point): Point[] => {
   const [x1, y1] = start;
   const [x2, y2] = end;
 
-  const x = x1 === x2 ? x1 : null;
-  const y = y1 === y2 ? y1 : null;
+  const dx = Math.sign(x2 - x1);
+  const dy = Math.sign(y2 - y1);
 
-  if(x) {
-    const ymin = Math.min(y1, y2);
-    const ymax = Math.max(y1, y2);
+  const horizontalRange = _.range(x1, x2 + dx, dx);
+  const verticalRange = _.range(y1, y2 + dy, dy);
 
-    return _.range(ymin, ymax + 1).map(y => [x,y]);
-  }
+  const horizontal = horizontalRange.length > 0
+    ? horizontalRange
+    : _.times(verticalRange.length, _.constant(x1));
 
-  if(y) {
-    const xmin = Math.min(x1, x2);
-    const xmax = Math.max(x1, x2);
+  const vertical = verticalRange.length > 0
+    ? verticalRange
+    : _.times(horizontalRange.length, _.constant(y1));
 
-    return _.range(xmin, xmax + 1).map(x => [x,y]);
-  }
-
-  return [[0,0]];
+  return _.zip(horizontal, vertical) as Point[];
 }
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
