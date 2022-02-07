@@ -1,63 +1,65 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-type SolverGeneric = (data: string, filter: (p: Point[]) => boolean) => number;
+type SolverGeneric = (data: string, filterF: (p: Point[]) => boolean) => number;
 type Solver = (data: string) => number;
 
-type Point = number[];
+interface Point {
+  x: number;
+  y: number;
+}
+
+const makePoint = ([x,y]: number[]) => ({ x, y });
 
 const makePath = ([start, end]: Point[]): Point[] => {
-  const [x1, y1] = start;
-  const [x2, y2] = end;
+  const { x: x1, y: y1 } = start;
+  const { x: x2, y: y2 } = end;
 
-  const dx = Math.sign(x2 - x1);
-  const dy = Math.sign(y2 - y1);
+  const sx = Math.sign(x2 - x1);
+  const sy = Math.sign(y2 - y1);
 
-  const horizontalRange = _.range(x1, x2 + dx, dx);
-  const verticalRange = _.range(y1, y2 + dy, dy);
+  const horRange = _.range(x1, x2 + sx, sx);
+  const vertRange = _.range(y1, y2 + sy, sy);
 
-  const horizontal = horizontalRange.length > 0
-    ? horizontalRange
-    : _.times(verticalRange.length, _.constant(x1));
+  const horizontal = horRange.length > 0
+    ? horRange
+    : _.times(vertRange.length, _.constant(x1));
 
-  const vertical = verticalRange.length > 0
-    ? verticalRange
-    : _.times(horizontalRange.length, _.constant(y1));
+  const vertical = vertRange.length > 0
+    ? vertRange
+    : _.times(horRange.length, _.constant(y1));
 
-  return _.zip(horizontal, vertical) as Point[];
+  const points = _
+    .zip(horizontal, vertical)
+    // @ts-ignore
+    .map(makePoint)
+
+  return points as Point[];
 }
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
 const isHorizontal = ([start, end]: Point[]) =>
-  start[0] === end[0];
+  start.x === end.x;
 
 const isVertical = ([start, end]: Point[]) =>
-  start[1] === end[1];
+  start.y === end.y;
 
 const isDiagonal = ([start, end]: Point[]) =>
-  Math.abs(start[0] - end[0]) === Math.abs(start[1] - end[1]);
+  Math.abs(start.x - end.x) === Math.abs(start.y - end.y);
 
-export const solve: SolverGeneric = (data, filter) => {
-  const pairs: Point[][] = data
-    .trim()
-    .split('\n')
-    .map(row => row.split(' -> '))
-    .map(pair => pair.map(coords => coords.split(',').map(Number)));
-
-  const pathData = pairs
-    .filter(filter)
-    .flatMap(makePath);
-
-  const count = _(pathData)
-    .countBy()
-    .values()
-    .filter(count => count > 1)
-    .value()
-    .length;
-
-  return count;
-};
+export const solve: SolverGeneric = (data, filterF) =>
+  _(data)
+  .thru(s => s.trim().split('\n'))
+  .map(row => row.split(' -> ').map(coords => coords.split(',').map(Number)))
+  .map(([start, end]) => [makePoint(start), makePoint(end)])
+  .filter(filterF)
+  .flatMap(makePath)
+  .countBy(_.toPairs)
+  .values()
+  .filter(count => count > 1)
+  .value()
+  .length;
 
 export const solve1: Solver = (data) =>
   solve(data, _.overSome(isHorizontal, isVertical));
