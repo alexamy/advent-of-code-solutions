@@ -2,7 +2,7 @@ import { readInput, solve } from './index';
 
 const data = `3,4,3,1,2`;
 
-// it wont work just by bruteforce
+// it wont work just by bruteforce, `solve1` will fail
 it('doesnt run too long', () => {
   const start = new Date();
   solve(data, 130);
@@ -11,7 +11,7 @@ it('doesnt run too long', () => {
   expect(runTime).toBeLessThanOrEqual(500);
 });
 
-// it wont work just by bruteforce
+// it wont work just by bruteforce, `solve1` will fail
 it('doesnt run too long again', () => {
   const start = new Date();
   solve(data, 192);
