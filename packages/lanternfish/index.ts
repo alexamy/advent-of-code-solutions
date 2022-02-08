@@ -10,6 +10,16 @@ export const solve1 = (initial: string, day: number) => _
   .reduce((days) => days.flatMap(producer), initial.trim().split(',').map(Number))
   .length;
 
+const transformer = (next: number[]) => (count: number, day: number) => {
+  if(day === 0) {
+    next[6] = count;
+    next[8] = count;
+  }
+  else {
+    next[day-1] += count;
+  }
+}
+
 export const solve2 = (data: string, days: number) => {
   const DAYS = 9; // max lifetime
 
@@ -20,15 +30,7 @@ export const solve2 = (data: string, days: number) => {
   const counts = _.range(days).reduce(counts => {
     const next: number[] = Array(DAYS).fill(0);
 
-    counts.forEach((count, day) => {
-      if(day === 0) {
-        next[6] = count;
-        next[8] = count;
-      }
-      else {
-        next[day-1] += count;
-      }
-    });
+    counts.forEach(transformer(next));
 
     return next;
   }, countsStart);
