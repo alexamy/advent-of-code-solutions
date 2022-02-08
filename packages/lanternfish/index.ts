@@ -1,9 +1,9 @@
 import fs from 'fs';
 import _ from 'lodash';
 
-const producer = (n: number) => n === 0 ? [6,8] : [n-1];
-
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
+
+const producer = (n: number) => n === 0 ? [6,8] : [n-1];
 
 export const solve1 = (initial: string, day: number) => _
   .range(day)
