@@ -1,6 +1,6 @@
 import fs from 'fs';
 import _ from 'lodash';
-import R from 'ramda';
+import r from 'ramda';
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
@@ -22,14 +22,14 @@ const transformer = (next: number[]) => (count: number, day: number) => {
 }
 
 export const solve2 = (data: string, days: number) => {
-  const addReducer = (acc: number[], v: number) =>
-    R.over(R.lensIndex(v), R.pipe(R.defaultTo(0), R.inc), acc);
+  const addReducer = (v: number) =>
+    r.over<number[], number>(r.lensIndex(v), r.pipe(r.defaultTo(0), r.inc));
 
-  const countsStart = R.pipe(
-    R.trim,
-    R.split(','),
-    R.map(Number),
-    R.reduce(addReducer, R.repeat(0, 8))
+  const countsStart = r.pipe(
+    r.trim,
+    r.split(','),
+    r.map(Number),
+    r.reduce((acc, v) => addReducer(v)(acc), r.repeat(0, 8))
   )(data);
 
   const counts = [...Array(days).keys()]
