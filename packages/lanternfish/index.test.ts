@@ -2,24 +2,6 @@ import { readInput, solve } from './index';
 
 const data = `3,4,3,1,2`;
 
-// it wont work just by bruteforce, `solve1` will fail
-it('doesnt run too long', () => {
-  const start = new Date();
-  solve(data, 130);
-  const runTime = new Date().getTime() - start.getTime();
-
-  expect(runTime).toBeLessThanOrEqual(500);
-});
-
-// it wont work just by bruteforce, `solve1` will fail
-it('doesnt run too long again', () => {
-  const start = new Date();
-  solve(data, 192);
-  const runTime = new Date().getTime() - start.getTime();
-
-  expect(runTime).toBeLessThanOrEqual(500);
-});
-
 it('calculates result for part 1 day 18', () => {
   expect(solve(data, 18)).toBe(26);
 });
