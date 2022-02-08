@@ -12,7 +12,9 @@ export const solve1 = (initial: string, day: number) => _
 
 interface Cache { fish: number[]; count: number[] };
 
-export const solve2 = (initial: string, day: number) => {
+export const solve2 = (data: string, day: number) => {
+  const initial = data.trim().split(',').map(Number);
+
   const fishes = [0];
   const cache: number[] = [];
 
@@ -33,9 +35,6 @@ export const solve2 = (initial: string, day: number) => {
   }
 
   const count = initial
-    .trim()
-    .split(',')
-    .map(Number)
     .map(d => cache[day - d])
     .reduce((a, b) => a + b);
 
