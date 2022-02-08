@@ -25,23 +25,26 @@ export const solve2 = (data: string, days: number) => {
   const incByIndex = (v: number) =>
     r.over<number[], number>(r.lensIndex(v), r.pipe(r.defaultTo(0), r.inc));
 
-  const reducer = (acc: number[], v: number) => incByIndex(v)(acc);
+  const startReducer = (acc: number[], v: number) => incByIndex(v)(acc);
 
   const countsStart = r.pipe(
     r.trim,
     r.split(','),
     r.map(Number),
-    r.reduce(reducer, r.repeat(0, 8))
+    r.reduce(startReducer, r.repeat(0, 8))
   )(data);
 
-  const counts = [...Array(days).keys()]
-    .reduce(counts => {
-      const next = Array(counts.length).fill(0);
-      counts.forEach(transformer(next));
-      return next;
-    }, countsStart);
+  const countReducer = (counts: number[]) => {
+    const next = Array(counts.length).fill(0);
+    counts.forEach(transformer(next));
+    return next;
+  }
 
-  const length = r.sum(counts);
+  const length = r.pipe(
+    r.range(0),
+    r.reduce(countReducer, countsStart),
+    r.sum
+  )(days);
 
   return length;
 };
