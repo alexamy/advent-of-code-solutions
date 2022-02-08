@@ -13,27 +13,29 @@ export const solve1 = (initial: string, day: number) => _
 interface Cache { fish: number[]; count: number[] };
 
 export const solve2 = (data: string, days: number) => {
+  const dayKeys = _.range(9);
   const initial = data.trim().split(',').map(Number);
 
-  let count: number[] = _.range(9).map(_.constant(0));
+  let count: number[] = dayKeys.map(_.constant(0));
   initial.forEach(k => (count[k] += 1));
 
   _.range(days).forEach(() => {
-    const next: number[] = _.range(9).map(_.constant(0));
+    const next: number[] = dayKeys.map(_.constant(0));
 
-    next[0] = 0;
-    next[6] = count[0];
-    next[8] = count[0];
-
-    _.range(1, 9).forEach(k => {
-      next[k-1] += count[k];
+    dayKeys.forEach(k => {
+      if(k === 0) {
+        next[6] = count[0];
+        next[8] = count[0];
+      }
+      else {
+        next[k-1] += count[k];
+      }
     });
 
     count = next;
   });
 
-  const length = _
-    .range(9)
+  const length = dayKeys
     .map(k => count[k])
     .reduce((a, b) => a + b);
 
