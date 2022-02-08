@@ -25,6 +25,15 @@ it('doesnt run too long', () => {
   expect(runTime).toBeLessThanOrEqual(500);
 });
 
+// it wont work just by bruteforce
+it('doesnt run too long again', () => {
+  const start = new Date();
+  solve(data, 192);
+  const runTime = new Date().getTime() - start.getTime();
+
+  expect(runTime).toBeLessThanOrEqual(500);
+});
+
 it.skip('calculates result for part 2', () => {
   expect(solve(data, 256)).toBe(26984457539);
 });
