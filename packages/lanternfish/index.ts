@@ -28,14 +28,14 @@ export const solve2 = (data: string, days: number) => {
       return acc;
     }, [] as number[]);
 
-  const counts = _.range(days).reduce(counts => {
-    const next = Array(counts.length).fill(0);
-    counts.forEach(transformer(next));
-    return next;
-  }, countsStart);
+  const counts = [...Array(days).keys()]
+    .reduce(counts => {
+      const next = Array(counts.length).fill(0);
+      counts.forEach(transformer(next));
+      return next;
+    }, countsStart);
 
-  const length = _
-    .range(counts.length)
+  const length = [...Array(counts.length).keys()]
     .map(k => counts[k])
     .reduce((a, b) => a + b);
 
