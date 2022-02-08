@@ -1,6 +1,6 @@
 import fs from 'fs';
 import _ from 'lodash';
-import r from 'ramda';
+import r, { inc } from 'ramda';
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
@@ -29,7 +29,7 @@ export const solve2 = (data: string, days: number) => {
     r.trim,
     r.split(','),
     r.map(Number),
-    r.reduce(r.flip(r.uncurryN(2, incByIndex)), r.repeat(0, 8))
+    r.reduce((acc: number[], v) => incByIndex(v)(acc), r.repeat(0, 8))
   )(data);
 
   const counts = [...Array(days).keys()]
