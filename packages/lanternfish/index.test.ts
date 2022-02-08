@@ -10,7 +10,7 @@ it('calculates result for part 1 day 80', () => {
   expect(solve(data, 80)).toBe(5934);
 });
 
-it.skip('calculates result for part 1 file input', async () => {
+it('calculates result for part 1 file input', async () => {
   const input = await readInput();
 
   expect(solve(input, 80)).toBe(390011);

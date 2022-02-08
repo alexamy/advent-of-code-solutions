@@ -10,8 +10,36 @@ export const solve1 = (initial: string, day: number) => _
   .reduce((days) => days.flatMap(producer), initial.trim().split(',').map(Number))
   .length;
 
-export const solve2 = (data: string, day: number) => {
-  return solve1(data, day);
+interface Cache { fish: number[]; count: number[] };
+
+export const solve2 = (initial: string, day: number) => {
+  const fishes = [0];
+  const cache: number[] = [];
+
+  for(let i = 0; i < day; i++) {
+    cache.push(fishes.length);
+
+    let add = 0;
+    for(let f = 0; f < fishes.length; f++) {
+      if(fishes[f] === 0) {
+        fishes[f] = 6;
+        add += 1;
+      }
+      else {
+        fishes[f] -= 1;
+      }
+    }
+    [...Array(add)].forEach(() => fishes.push(8));
+  }
+
+  const count = initial
+    .trim()
+    .split(',')
+    .map(Number)
+    .map(d => cache[day - d])
+    .reduce((a, b) => a + b);
+
+  return count;
 };
 
 export const solve = solve2;
