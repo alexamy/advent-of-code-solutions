@@ -13,3 +13,5 @@ export const solve1 = (initial: string, day: number) => _
 export const solve2 = (data: string, day: number) => {
   return solve1(data, day);
 };
+
+export const solve = solve2;
