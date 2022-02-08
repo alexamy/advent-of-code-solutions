@@ -14,11 +14,11 @@ export const solve2 = (data: string, days: number) => {
   const dayKeys = _.range(9);
   const zeroDays = dayKeys.map(_.constant(0));
 
-  let counts = data
+  const countsStart = data
     .trim().split(',').map(Number)
     .reduce((acc, k) => { acc[k] += 1; return acc; }, [...zeroDays]);
 
-  _.range(days).forEach(() => {
+  const counts = _.range(days).reduce(counts => {
     const next: number[] = [...zeroDays];
 
     counts.forEach((count, day) => {
@@ -31,8 +31,8 @@ export const solve2 = (data: string, days: number) => {
       }
     });
 
-    counts = next;
-  });
+    return next;
+  }, countsStart);
 
   const length = dayKeys.map(k => counts[k]).reduce((a, b) => a + b);
 
