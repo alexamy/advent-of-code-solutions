@@ -10,16 +10,16 @@ export const solve1 = (initial: string, day: number) => _
   .reduce((days) => days.flatMap(producer), initial.trim().split(',').map(Number))
   .length;
 
-interface Cache { fish: number[]; count: number[] };
-
 export const solve2 = (data: string, days: number) => {
   const dayKeys = _.range(9);
-  let counts: number[] = dayKeys.map(_.constant(0));
+  const zeroDays = dayKeys.map(_.constant(0));
 
-  data.trim().split(',').map(Number).forEach(k => (counts[k] += 1));
+  let counts = data
+    .trim().split(',').map(Number)
+    .reduce((acc, k) => { acc[k] += 1; return acc; }, [...zeroDays]);
 
   _.range(days).forEach(() => {
-    const next: number[] = dayKeys.map(_.constant(0));
+    const next: number[] = [...zeroDays];
 
     counts.forEach((count, day) => {
       if(day === 0) {
@@ -34,9 +34,7 @@ export const solve2 = (data: string, days: number) => {
     counts = next;
   });
 
-  const length = dayKeys
-    .map(k => counts[k])
-    .reduce((a, b) => a + b);
+  const length = dayKeys.map(k => counts[k]).reduce((a, b) => a + b);
 
   return length;
 };
