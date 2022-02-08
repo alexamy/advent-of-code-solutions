@@ -16,26 +16,32 @@ const transformer = (next: number[]) => (count: number, day: number) => {
     next[8] = count;
   }
   else {
+    next[day-1] = next[day-1] ?? 0;
     next[day-1] += count;
   }
 }
 
 export const solve2 = (data: string, days: number) => {
-  const DAYS = 9; // max lifetime
-
   const countsStart = data
     .trim().split(',').map(Number)
-    .reduce((acc, k) => { acc[k] += 1; return acc; }, Array(DAYS).fill(0));
+    .reduce((acc, k) => {
+      acc[k] = acc[k] ?? 0;
+      acc[k] += 1;
+
+      return acc;
+    }, [] as number[]);
 
   const counts = _.range(days).reduce(counts => {
-    const next: number[] = Array(DAYS).fill(0);
-
+    const next = Array(counts.length).fill(0);
     counts.forEach(transformer(next));
 
     return next;
   }, countsStart);
 
-  const length = _.range(DAYS).map(k => counts[k]).reduce((a, b) => a + b);
+  const length = _
+    .range(counts.length)
+    .map(k => counts[k])
+    .reduce((a, b) => a + b);
 
   return length;
 };
