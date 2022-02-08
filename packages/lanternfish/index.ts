@@ -25,11 +25,13 @@ export const solve2 = (data: string, days: number) => {
   const incByIndex = (v: number) =>
     r.over<number[], number>(r.lensIndex(v), r.pipe(r.defaultTo(0), r.inc));
 
+  const reducer = (acc: number[], v: number) => incByIndex(v)(acc);
+
   const countsStart = r.pipe(
     r.trim,
     r.split(','),
     r.map(Number),
-    r.reduce((acc: number[], v) => incByIndex(v)(acc), r.repeat(0, 8))
+    r.reduce(reducer, r.repeat(0, 8))
   )(data);
 
   const counts = [...Array(days).keys()]
