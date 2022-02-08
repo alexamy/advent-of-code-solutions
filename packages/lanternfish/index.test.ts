@@ -34,12 +34,12 @@ it('doesnt run too long again', () => {
   expect(runTime).toBeLessThanOrEqual(500);
 });
 
-it.skip('calculates result for part 2', () => {
+it('calculates result for part 2', () => {
   expect(solve(data, 256)).toBe(26984457539);
 });
 
-it.skip('calculates result for part 2 file input', async () => {
+it('calculates result for part 2 file input', async () => {
   const input = await readInput();
 
-  expect(solve(input, 256)).toBe({});
+  expect(solve(input, 256)).toBe(1746710169834);
 });
