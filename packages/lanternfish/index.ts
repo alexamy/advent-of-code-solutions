@@ -11,15 +11,14 @@ export const solve1 = (initial: string, day: number) => _
   .length;
 
 export const solve2 = (data: string, days: number) => {
-  const dayKeys = _.range(9);
-  const zeroDays = dayKeys.map(_.constant(0));
+  const DAYS = 9; // max lifetime
 
   const countsStart = data
     .trim().split(',').map(Number)
-    .reduce((acc, k) => { acc[k] += 1; return acc; }, [...zeroDays]);
+    .reduce((acc, k) => { acc[k] += 1; return acc; }, Array(DAYS).fill(0));
 
   const counts = _.range(days).reduce(counts => {
-    const next: number[] = [...zeroDays];
+    const next: number[] = Array(DAYS).fill(0);
 
     counts.forEach((count, day) => {
       if(day === 0) {
@@ -34,7 +33,7 @@ export const solve2 = (data: string, days: number) => {
     return next;
   }, countsStart);
 
-  const length = dayKeys.map(k => counts[k]).reduce((a, b) => a + b);
+  const length = _.range(DAYS).map(k => counts[k]).reduce((a, b) => a + b);
 
   return length;
 };
