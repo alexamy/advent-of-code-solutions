@@ -1,6 +1,6 @@
 {
-  "name": "sample-solution",
-  "description": "YYYY-N",
+  "name": "lanternfish",
+  "description": "2021-6",
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",

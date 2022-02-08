@@ -1,0 +1,21 @@
+{
+  "include": ["**/*.ts"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext", "dom"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}
