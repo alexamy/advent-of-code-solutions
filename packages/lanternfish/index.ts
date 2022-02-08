@@ -1,5 +1,6 @@
 import fs from 'fs';
 import _ from 'lodash';
+import r from 'ramda';
 
 export const readInput = async () => (await fs.promises.readFile('./input.txt')).toString();
 
@@ -21,12 +22,18 @@ const transformer = (next: number[]) => (count: number, day: number) => {
 }
 
 export const solve2 = (data: string, days: number) => {
-  const countsStart = data
-    .trim().split(',').map(Number)
-    .reduce((acc, k) => {
-      acc[k] = (acc[k] ?? 0) + 1;
-      return acc;
-    }, [] as number[]);
+  const addReducer = (acc: number[], i: number) => {
+    acc[i] = (acc[i] ?? 0) + 1;
+    return acc;
+  };
+
+  const countsStart = r.pipe(
+    r.trim,
+    r.split(','),
+    r.map(Number),
+    r.reduce(addReducer, [])
+  )(data);
+
 
   const counts = [...Array(days).keys()]
     .reduce(counts => {
