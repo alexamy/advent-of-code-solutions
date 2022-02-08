@@ -14,29 +14,28 @@ interface Cache { fish: number[]; count: number[] };
 
 export const solve2 = (data: string, days: number) => {
   const dayKeys = _.range(9);
-  const initial = data.trim().split(',').map(Number);
+  let counts: number[] = dayKeys.map(_.constant(0));
 
-  let count: number[] = dayKeys.map(_.constant(0));
-  initial.forEach(k => (count[k] += 1));
+  data.trim().split(',').map(Number).forEach(k => (counts[k] += 1));
 
   _.range(days).forEach(() => {
     const next: number[] = dayKeys.map(_.constant(0));
 
-    dayKeys.forEach(k => {
-      if(k === 0) {
-        next[6] = count[0];
-        next[8] = count[0];
+    counts.forEach((count, day) => {
+      if(day === 0) {
+        next[6] = count;
+        next[8] = count;
       }
       else {
-        next[k-1] += count[k];
+        next[day-1] += count;
       }
     });
 
-    count = next;
+    counts = next;
   });
 
   const length = dayKeys
-    .map(k => count[k])
+    .map(k => counts[k])
     .reduce((a, b) => a + b);
 
   return length;
