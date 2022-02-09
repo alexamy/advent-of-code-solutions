@@ -1,5 +1,5 @@
 import fs from 'fs';
-import _ from 'lodash';
+import _, { isNumber } from 'lodash';
 
 const producer = (n: number) => n === 0 ? [6,8] : [n-1];
 
@@ -10,32 +10,24 @@ export const solve1 = (initial: string, day: number) => _
   .reduce((days) => days.flatMap(producer), initial.trim().split(',').map(Number))
   .length;
 
-const transformer = (next: number[]) => (count: number, day: number) => {
-  if(day === 0) {
-    next[6] = count;
-    next[8] = count;
-  }
-  else {
-    next[day-1] = (next[day-1] ?? 0) + count;
-  }
-}
-
 export const solve2 = (data: string, days: number) => {
-  const countsStart = data
-    .trim().split(',').map(Number)
-    .reduce((acc, k) => {
-      acc[k] = (acc[k] ?? 0) + 1;
-      return acc;
-    }, [] as number[]);
+  const safeSum = (a: number, b: number) => isFinite(a + b) ? (a + b) : undefined;
+  const dayInit = (num: number) => ({ [num]: 1 });
+  const nextDay = (count: number, day: number) =>
+    +day === 0
+      ? { 6: count, 8: count }
+      : { [+day-1]: count };
 
-  const counts = [...Array(days).keys()]
+  const dayObjects = data.trim().split(',').map(Number).map(dayInit);
+  const countsStart = _.mergeWith({}, ...dayObjects, safeSum);
+
+  const counts = _.range(days)
     .reduce(counts => {
-      const next = Array(counts.length).fill(0);
-      counts.forEach(transformer(next));
-      return next;
+      const values = _.mapValues(counts, nextDay);
+      return _.mergeWith({}, ..._.values(values), safeSum);
     }, countsStart);
 
-  const length = counts.reduce((a, b) => a + b);
+  const length = _.values(counts).reduce(safeSum);
 
   return length;
 };
