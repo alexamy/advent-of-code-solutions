@@ -11,4 +11,8 @@ export const solve1 = (data: string) => {
   return fuel;
 };
 
-export const solve2 = (data: string) => {};
+export const solve2 = (data: string) => {
+  const positions = data.trim().split(',').map(Number);
+
+  return positions;
+};
