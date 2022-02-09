@@ -11,7 +11,9 @@ export const solve1 = (initial: string, day: number) => _
   .reduce((days) => days.flatMap(producer), initial.trim().split(',').map(Number))
   .length;
 
-const transformer = (next: number[]) => (count: number, day: number) => {
+const transformer = (next: number[]) => ([dayStr, count]: [string, number]) => {
+  const day = Number(dayStr);
+
   if(day === 0) {
     next[6] = count;
     next[8] = count;
@@ -24,18 +26,18 @@ const transformer = (next: number[]) => (count: number, day: number) => {
 export const solve2 = (data: string, days: number) => {
   const log = r.tap(console.log);
 
-  const countsStart = r.pipe(
+  const countsStart: Record<string, number> = r.pipe(
     r.trim,
     r.split(','),
     r.map(Number),
-    //@ts-ignore
-    r.map(r.objOf(r.__, 1)),
-    r.reduce(r.mergeWith(r.add), []),
+    r.map(r.flip(r.objOf)(1)),
+    r.reduce(r.mergeWith(r.add), {}),
   )(data);
 
-  const countReducer = (counts: number[]) => {
-    const next = Array(counts.length).fill(0);
-    counts.forEach(transformer(next));
+  const countReducer = (counts: Record<string, number>) => {
+    const pairs = r.toPairs(counts);
+    const next = Array(pairs.length).fill(0);
+    pairs.forEach(transformer(next));
     return next;
   }
 
