@@ -23,17 +23,17 @@ export const solve2 = (data: string, days: number) => {
   )(data);
 
   const countReducer = (counts: Record<string, number>) => {
-    const pairs = r.toPairs(counts);
+    const mapper = (count: number, day: string) =>
+      +day === 0 ? ({ 6: count, 8: count }) : ({ [+day-1]: count })
 
-    const ps = pairs.map(([dayStr, count]) => {
-      const day = Number(dayStr);
-      return day === 0 ? { 6: count, 8: count } : { [day-1]: count };
-    });
-
-    return r.reduce(r.mergeWith(r.add), {})(ps);
+    return r.pipe(
+      r.mapObjIndexed(mapper),
+      r.values,
+      r.reduce(r.mergeWith(r.add), {})
+    )(counts);
   }
 
-  const length = r.pipe(
+  const length: number = r.pipe(
     r.range(0),
     r.reduce(countReducer, countsStart),
     r.toPairs,
