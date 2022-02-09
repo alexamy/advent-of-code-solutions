@@ -22,16 +22,15 @@ const transformer = (next: number[]) => (count: number, day: number) => {
 }
 
 export const solve2 = (data: string, days: number) => {
-  const incByIndex = (v: number) =>
-    r.over<number[], number>(r.lensIndex(v), r.pipe(r.defaultTo(0), r.inc));
-
-  const startReducer = (acc: number[], v: number) => incByIndex(v)(acc);
+  const log = r.tap(console.log);
 
   const countsStart = r.pipe(
     r.trim,
     r.split(','),
     r.map(Number),
-    r.reduce(startReducer, r.repeat(0, 8))
+    //@ts-ignore
+    r.map(r.objOf(r.__, 1)),
+    r.reduce(r.mergeWith(r.add), []),
   )(data);
 
   const countReducer = (counts: number[]) => {
