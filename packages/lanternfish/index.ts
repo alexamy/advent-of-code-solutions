@@ -35,9 +35,7 @@ export const solve2 = (data: string, days: number) => {
       return next;
     }, countsStart);
 
-  const length = [...Array(counts.length).keys()]
-    .map(k => counts[k])
-    .reduce((a, b) => a + b);
+  const length = counts.reduce((a, b) => a + b);
 
   return length;
 };
