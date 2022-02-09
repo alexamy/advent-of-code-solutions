@@ -29,11 +29,14 @@ export const solve2 = (data: string, days: number) => {
       r.unapply(r.identity),
       r.ifElse(
         r.propEq(1, '0'),
-        r.pipe(r.prop('0'), r.converge(r.mergeLeft, [r.objOf('6'), r.objOf('8')])),
-        r.pipe(r.slice(0, 2), r.reverse, r.apply(
-          (day, count) => ({ [+day-1]: count })
-        ))),
-    )
+        r.pipe(
+          r.prop(0),
+          r.converge(r.mergeLeft, [r.objOf('6'), r.objOf('8')])),
+        r.converge(r.objOf, [
+          r.pipe(r.prop(1), Number, r.dec),
+          r.prop(0)
+        ])),
+      r.mergeAll)
 
 
     return r.pipe(
