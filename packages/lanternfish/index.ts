@@ -1,5 +1,5 @@
 import fs from 'fs';
-import _, { isNumber } from 'lodash';
+import _ from 'lodash';
 
 const producer = (n: number) => n === 0 ? [6,8] : [n-1];
 
@@ -12,22 +12,30 @@ export const solve1 = (initial: string, day: number) => _
 
 export const solve2 = (data: string, days: number) => {
   const safeSum = (a: number, b: number) => isFinite(a + b) ? (a + b) : undefined;
-  const dayInit = (num: number) => ({ [num]: 1 });
-  const nextDay = (count: number, day: number) =>
+  const sumDays = (xs: Record<string, number>[]) => _.mergeWith({}, ...xs, safeSum)
+
+  const dayInit = (k: string) => ({ [k]: 1 });
+  const nextDay = (count: number, day: number): Record<string, number> =>
     +day === 0
       ? { 6: count, 8: count }
       : { [+day-1]: count };
 
-  const dayObjects = data.trim().split(',').map(Number).map(dayInit);
-  const countsStart = _.mergeWith({}, ...dayObjects, safeSum);
+  const start: Record<string, number> =
+    _(data)
+    .thru(s => s.trim().split(',').map(dayInit))
+    .thru(sumDays)
+    .value();
 
-  const counts = _.range(days)
-    .reduce(counts => {
-      const values = _.mapValues(counts, nextDay);
-      return _.mergeWith({}, ..._.values(values), safeSum);
-    }, countsStart);
+  const counts = _
+    .range(days)
+    .reduce((counts) => _(counts)
+      .mapValues(nextDay)
+      .values()
+      .thru(sumDays)
+      .value()
+    , start);
 
-  const length = _.values(counts).reduce(safeSum);
+  const length = _(counts).values().sum();
 
   return length;
 };
