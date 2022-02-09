@@ -27,14 +27,14 @@ export const solve2 = (data: string, days: number) => {
       r.unapply(r.identity),
       r.ifElse(
         r.propEq(1, '0'),
-        // r.converge(r.merge, [r.objOf('6'), r.objOf('8')]),
-        ([count]) => ({ 6: count, 8: count }),
+        r.pipe(r.prop('0'), r.converge(r.mergeLeft, [r.objOf('6'), r.objOf('8')])),
         ([count, day]) => ({ [+day-1]: count })),
     )
 
 
     return r.pipe(
       r.mapObjIndexed(mapper),
+      // log,
       r.values,
       r.reduce(r.mergeWith(r.add), {})
     )(counts);
