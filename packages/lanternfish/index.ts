@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import fs from 'fs';
 import _ from 'lodash';
 import r, { inc } from 'ramda';
@@ -28,13 +30,14 @@ export const solve2 = (data: string, days: number) => {
       r.ifElse(
         r.propEq(1, '0'),
         r.pipe(r.prop('0'), r.converge(r.mergeLeft, [r.objOf('6'), r.objOf('8')])),
-        ([count, day]) => ({ [+day-1]: count })),
+        r.pipe(r.slice(0, 2), r.reverse, r.apply(
+          (day, count) => ({ [+day-1]: count })
+        ))),
     )
 
 
     return r.pipe(
       r.mapObjIndexed(mapper),
-      // log,
       r.values,
       r.reduce(r.mergeWith(r.add), {})
     )(counts);
