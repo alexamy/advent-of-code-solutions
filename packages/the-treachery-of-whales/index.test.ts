@@ -1,7 +1,7 @@
 import { fileData, testData } from './data';
 import { solve1, solve2 } from './index';
 
-it.todo('calculates result for part 1 test data', () => {
+it('calculates result for part 1 test data', () => {
   expect(solve1(testData)).toBe(37);
 });
 
