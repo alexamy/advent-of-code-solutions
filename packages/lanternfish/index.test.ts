@@ -2,7 +2,7 @@ import { readInput, solve } from './index';
 
 const data = `3,4,3,1,2`;
 
-it.only('calculates result for part 1 day 18', () => {
+it('calculates result for part 1 day 18', () => {
   expect(solve(data, 18)).toBe(26);
 });
 

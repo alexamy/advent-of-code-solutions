@@ -19,14 +19,14 @@ const nextDay = (count: number, day: string): Record<string, number> =>
     ? { 6: count, 8: count }
     : { [+day-1]: count };
 
-export const solve2 = (data: string, days: number) => {
-  const dayIteratee = (counts: Record<string, number>) =>
-    _(counts)
-    .mapValues(nextDay)
-    .values()
-    .thru(sumDays)
-    .value();
+const dayIteratee = (counts: Record<string, number>) =>
+  _(counts)
+  .mapValues(nextDay)
+  .values()
+  .thru(sumDays)
+  .value();
 
+export const solve2 = (data: string, days: number) => {
   const initDays: Record<string, number> =
     _(data)
     .thru(s => s.trim().split(',').map(dayInit))
