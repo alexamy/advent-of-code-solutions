@@ -15,7 +15,7 @@ export const solve2 = (data: string, days: number) => {
   const sumDays = (xs: Record<string, number>[]) => _.mergeWith({}, ...xs, safeSum)
 
   const dayInit = (k: string) => ({ [k]: 1 });
-  const nextDay = (count: number, day: number): Record<string, number> =>
+  const nextDay = (count: number, day: string): Record<string, number> =>
     +day === 0
       ? { 6: count, 8: count }
       : { [+day-1]: count };
@@ -26,18 +26,22 @@ export const solve2 = (data: string, days: number) => {
     .thru(sumDays)
     .value();
 
-  const counts = _
-    .range(days)
-    .reduce((counts) => _(counts)
-      .mapValues(nextDay)
-      .values()
-      .thru(sumDays)
-      .value()
-    , start);
+  const dayIteratee = (counts: Record<string, number>) =>
+    _(counts)
+    .mapValues<Record<string, number>>(nextDay)
+    .values()
+    .thru(sumDays)
+    .value();
 
-  const length = _(counts).values().sum();
+  const count = _
+    .chain(days)
+    .range()
+    .reduce(dayIteratee, start)
+    .values()
+    .sum()
+    .value();
 
-  return length;
+  return count;
 };
 
 export const solve = solve2;
