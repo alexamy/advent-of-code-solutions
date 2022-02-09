@@ -1,24 +1,18 @@
-import { readInput, solve1, solve2 } from './index';
+import { solve1, solve2 } from './index';
+import { realData, testData } from './data';
 
-const data = `
-`;
-
-it.todo('calculates result for part 1', () => {
-  expect(solve1(data)).toBe({});
+it.todo('calculates result for part 1 test data', () => {
+  expect(solve1(testData)).toBe({});
 });
 
-it.skip('calculates result for part 1 file input', async () => {
-  const input = await readInput();
+it.skip('calculates result for part 1', () => {
+  expect(solve1(realData)).toBe({});
+});
 
-  expect(solve1(input)).toBe({});
+it.skip('calculates result for part 2 test data', () => {
+  expect(solve2(testData)).toBe({});
 });
 
 it.skip('calculates result for part 2', () => {
-  expect(solve2(data)).toBe({});
-});
-
-it.skip('calculates result for part 2 file input', async () => {
-  const input = await readInput();
-
-  expect(solve2(input)).toBe({});
+  expect(solve2(realData)).toBe({});
 });
