@@ -24,7 +24,13 @@ export const solve2 = (data: string, days: number) => {
 
   const countReducer = (counts: Record<string, number>) => {
     const mapper = (count: number, day: string) =>
-      +day === 0 ? ({ 6: count, 8: count }) : ({ [+day-1]: count })
+      r.ifElse(
+        //@ts-ignore
+        r.eqBy(Number, 0),
+        () => ({ 6: count, 8: count }),
+        () => ({ [+day-1]: count }))
+      //@ts-ignore
+      (day)
 
     return r.pipe(
       r.mapObjIndexed(mapper),
